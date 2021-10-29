@@ -1,6 +1,13 @@
 spring:
   main:
     banner-mode: off
+
 logging:
   level:
     root: warn
+
+management:
+  endpoints:
+    web:
+      exposure:
+        exclude: '*'
