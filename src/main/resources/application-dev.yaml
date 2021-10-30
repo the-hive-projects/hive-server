@@ -8,6 +8,15 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create-drop
+    defer-datasource-initialization: true
+  sql:
+    init:
+      mode: always
+      platform: h2
+      schema-locations: classpath:sql/schema-*.sql
+      data-locations: classpath:sql/data-*.sql
+      encoding: UTF-8
+      separator: ;
   h2:
     console:
       enabled: true
