@@ -1,16 +1,15 @@
 package org.thehive.hiveserver.entity;
 
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
+import lombok.experimental.WithBy;
 
 import javax.persistence.*;
 
 @Getter
 @Setter
-@ToString
-@RequiredArgsConstructor
+@With
+@AllArgsConstructor
+@NoArgsConstructor
 @Entity(name = "user")
 @Table(name = "users")
 public class User {

@@ -13,7 +13,7 @@ import org.thehive.hiveserver.entity.User;
 import org.thehive.hiveserver.service.UserService;
 
 @Configuration
-public class SecurityConfig {
+public class AuthenticationConfig {
 
     @Profile("dev")
     @Bean(name = "passwordEncoder")
