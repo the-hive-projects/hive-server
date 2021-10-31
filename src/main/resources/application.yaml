@@ -1,5 +1,12 @@
 server:
   port: 8080
+  error:
+    path: /error
+    include-message: always
+    include-exception: true
+    include-stacktrace: never
+    include-binding-errors: never
+    include-method: true
 spring:
   application:
     name: hive-server
