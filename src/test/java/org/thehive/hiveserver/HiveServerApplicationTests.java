@@ -8,6 +8,7 @@ class HiveServerApplicationTests {
 
     @Test
     void contextLoads() {
+
     }
 
 }
