@@ -1,7 +1,6 @@
 package org.thehive.hiveserver.entity;
 
 import lombok.*;
-import lombok.experimental.WithBy;
 
 import javax.persistence.*;
 
@@ -15,8 +14,8 @@ import javax.persistence.*;
 public class User {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id;
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    private Integer id;
 
     @Column(unique = true, nullable = false, length = 64)
     private String username;

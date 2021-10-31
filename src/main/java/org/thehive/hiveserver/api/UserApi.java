@@ -5,7 +5,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.thehive.hiveserver.entity.User;
+import org.thehive.hiveserver.security.SecurityUtils;
 import org.thehive.hiveserver.service.UserService;
+
+import javax.servlet.http.HttpServletRequest;
 
 @ApiOperation(value = "/users")
 @RequiredArgsConstructor
@@ -21,23 +24,17 @@ public class UserApi {
         return userService.findById(id);
     }
 
-    @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.ACCEPTED)
-    public User updateUser(@PathVariable("id") int id){
-        //TODO
-        return null;
-    }
-
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@RequestBody User user) {
         return userService.save(user);
     }
 
-    @DeleteMapping("/{id}")
+    @PutMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
-    public void deleteUserById(@PathVariable("id") int id) {
-        userService.deleteById(id);
+    public User updateUser(@RequestBody User user, HttpServletRequest request) {
+        var securityUser = SecurityUtils.extractSecurityUser(request);
+        return userService.update(securityUser.getId(), user);
     }
 
 }
