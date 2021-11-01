@@ -1,6 +1,5 @@
 package org.thehive.hiveserver.api;
 
-import io.swagger.annotations.ApiOperation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +9,6 @@ import org.thehive.hiveserver.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
 
-@ApiOperation(value = "/users")
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/user")
