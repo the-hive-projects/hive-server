@@ -20,6 +20,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     private final PasswordEncoder passwordEncoder;
     private final UserDetailsService userDetailsService;
     private final AuthenticationEntryPoint authenticationEntryPoint;
+    private final UrlEndpointWhitelist urlEndpointWhitelist;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -30,7 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/user")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, urlEndpointWhitelist().getWhitelistArray())
+                .antMatchers(HttpMethod.GET, urlEndpointWhitelist.getWhitelistArray())
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -43,23 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(userDetailsService)
                 .passwordEncoder(passwordEncoder);
-    }
-
-    @Profile("dev")
-    @Bean
-    public UrlEndpointWhitelist urlEndpointWhitelist() {
-        return new UrlEndpointWhitelist(
-                new String[]{
-                        "/v2/api-docs",
-                        "/swagger-resources",
-                        "/swagger-resources/**",
-                        "/configuration/ui",
-                        "/configuration/security",
-                        "/swagger-ui.html",
-                        "/webjars/**",
-                        "/v3/api-docs/**",
-                        "/swagger-ui/**"
-                });
     }
 
 }

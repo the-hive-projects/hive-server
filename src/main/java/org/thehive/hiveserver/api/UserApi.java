@@ -1,5 +1,7 @@
 package org.thehive.hiveserver.api;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +20,7 @@ public class UserApi {
 
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
+    @Operation(security = @SecurityRequirement(name = "generalSecurity"))
     public User getUser(@PathVariable("id") int id) {
         return userService.findById(id);
     }
@@ -30,6 +33,7 @@ public class UserApi {
 
     @PutMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
+    @Operation(security = @SecurityRequirement(name = "generalSecurity"))
     public User updateUser(@RequestBody User user, HttpServletRequest request) {
         var securityUser = SecurityUtils.extractSecurityUser(request);
         return userService.update(securityUser.getId(), user);
