@@ -1,8 +1,6 @@
 package org.thehive.hiveserver.config;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Profile;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -31,12 +29,17 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/user")
                 .permitAll()
-                .antMatchers(HttpMethod.GET, urlEndpointWhitelist.getWhitelistArray())
+                .antMatchers(HttpMethod.GET, urlEndpointWhitelist.getMethodGetUrlEndpoints())
+                .permitAll()
+                .antMatchers(HttpMethod.POST, urlEndpointWhitelist.getMethodPostUrlEndpoints())
                 .permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()
                 .csrf()
+                .disable()
+                .headers()
+                .frameOptions()
                 .disable();
     }
 

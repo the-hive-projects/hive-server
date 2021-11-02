@@ -60,13 +60,18 @@ public class AuthenticationConfig {
                         // h2 console endpoints
                         "/h2-console",
                         "/h2-console/**"
+                },
+                new String[]{
+                        // h2 console endpoints
+                        "/h2-console",
+                        "/h2-console/**",
                 });
     }
 
     @Profile("pro")
     @Bean(name = "urlEndpointWhitelist")
     public UrlEndpointWhitelist proUrlEndpointWhitelist() {
-        return new UrlEndpointWhitelist(new String[]{});
+        return new UrlEndpointWhitelist(new String[]{},new String[]{});
     }
 
 }

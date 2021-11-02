@@ -5,6 +5,7 @@ import lombok.Data;
 @Data
 public class UrlEndpointWhitelist {
 
-    private final String[] whitelistArray;
+    private final String[] methodGetUrlEndpoints;
+    private final String[] methodPostUrlEndpoints;
 
 }
