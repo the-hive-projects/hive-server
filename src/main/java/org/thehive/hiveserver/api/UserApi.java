@@ -10,6 +10,7 @@ import org.thehive.hiveserver.security.SecurityUtils;
 import org.thehive.hiveserver.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 @RequiredArgsConstructor
 @RestController
@@ -27,14 +28,14 @@ public class UserApi {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public User saveUser(@RequestBody User user) {
+    public User saveUser(@Valid @RequestBody User user) {
         return userService.save(user);
     }
 
     @PutMapping
     @ResponseStatus(HttpStatus.ACCEPTED)
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
-    public User updateUser(@RequestBody User user, HttpServletRequest request) {
+    public User updateUser(@Valid @RequestBody User user, HttpServletRequest request) {
         var securityUser = SecurityUtils.extractSecurityUser(request);
         return userService.update(securityUser.getId(), user);
     }

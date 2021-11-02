@@ -9,6 +9,11 @@ spring:
     hibernate:
       ddl-auto: create-drop
     defer-datasource-initialization: true
+    properties:
+      javax:
+        persistence:
+          validation:
+            mode: none
   sql:
     init:
       mode: always
