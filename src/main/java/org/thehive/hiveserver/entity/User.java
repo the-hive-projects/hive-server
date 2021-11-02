@@ -36,8 +36,8 @@ public class User {
     @Column(unique = true, nullable = false, length = 256)
     private String email;
 
-    @Length(min = PASSWORD_USERNAME_LENGTH_MIN, max = PASSWORD_USERNAME_LENGTH_MAX, message = "{user.password.length}")
-    @Pattern(regexp = PASSWORD_USERNAME_PATTERN_REGEXP, message = "{user.password.pattern}")
+    @Length(min = USER_USERNAME_LENGTH_MIN, max = USER_PASSWORD_LENGTH_MAX, message = "{user.password.length}")
+    @Pattern(regexp = USER_PASSWORD_PATTERN_REGEXP, message = "{user.password.pattern}")
     @Column(nullable = false, length = 256)
     private String password;
 

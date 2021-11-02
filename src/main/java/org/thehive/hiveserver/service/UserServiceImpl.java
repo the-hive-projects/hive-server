@@ -20,10 +20,8 @@ public class UserServiceImpl implements UserService {
     public User save(@NonNull User user) {
         var userToDb = user.withId(null);
         userToDb.setPassword(passwordEncoder.encode(user.getPassword()));
-        userToDb.setUserInfo(new UserInfo());
-        var userInfo = new UserInfo();
-        userInfo.setCreatedAt(System.currentTimeMillis());
-        userToDb.setUserInfo(userInfo);
+        userToDb.getUserInfo().setId(null);
+        userToDb.getUserInfo().setCreatedAt(System.currentTimeMillis());
         return userRepository.save(userToDb);
     }
 

@@ -19,6 +19,14 @@ public class UserApi {
 
     private final UserService userService;
 
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(security = @SecurityRequirement(name = "generalSecurity"))
+    public User getUser(HttpServletRequest request) {
+        var securityUser = SecurityUtils.extractSecurityUser(request);
+        return userService.findById(securityUser.getId());
+    }
+
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
