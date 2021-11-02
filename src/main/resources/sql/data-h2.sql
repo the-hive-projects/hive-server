@@ -1,5 +1,5 @@
 INSERT INTO user_infos (id, firstname, lastname, created_at)
-VALUES (1, 'James', 'SMITH', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
+VALUES (1, 'firstname', 'lastname', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
        (2, 'Robert', 'BROWN', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
        (3, 'John', 'WILSON', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
        (4, 'Michael', 'THOMSON', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
@@ -101,7 +101,7 @@ VALUES (1, 'James', 'SMITH', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 10
        (100, 'Johnny', 'THOMPSON', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000);
 
 insert into users (id, username, password, email, user_info_id)
-values (1, 'rfarn0', '{noop}KEbijwn', 'dpilipets0@fotki.com', 1),
+values (1, 'user', '{noop}password', 'user@mail.com', 1),
        (2, 'rburborough1', '{noop}Z6gkSv2bPM', 'mgingle1@hostgator.com', 2),
        (3, 'dstollenbeck2', '{noop}TVBSJh', 'tmcinteer2@slashdot.org', 3),
        (4, 'srumsby3', '{noop}27PDXTBHO', 'tperillio3@t-online.de', 4),
