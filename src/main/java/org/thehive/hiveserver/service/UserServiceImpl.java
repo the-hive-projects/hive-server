@@ -6,6 +6,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thehive.hiveserver.entity.User;
+import org.thehive.hiveserver.entity.UserInfo;
 import org.thehive.hiveserver.repository.UserRepository;
 
 @RequiredArgsConstructor
@@ -19,6 +20,8 @@ public class UserServiceImpl implements UserService {
     public User save(@NonNull User user) {
         var userToDb = user.withId(null);
         userToDb.setPassword(passwordEncoder.encode(user.getPassword()));
+        userToDb.getUserInfo().setId(null);
+        userToDb.getUserInfo().setCreatedAt(System.currentTimeMillis());
         return userRepository.save(userToDb);
     }
 
@@ -28,6 +31,8 @@ public class UserServiceImpl implements UserService {
         userFromDb.setUsername(user.getUsername());
         userFromDb.setEmail(user.getEmail());
         userFromDb.setPassword(passwordEncoder.encode(user.getPassword()));
+        userFromDb.getUserInfo().setFirstname(user.getUserInfo().getFirstname());
+        userFromDb.getUserInfo().setFirstname(user.getUserInfo().getLastname());
         return userRepository.save(userFromDb);
     }
 
