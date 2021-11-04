@@ -17,8 +17,8 @@ public class ValidationErrorMessageProperties {
     private String separator;
     private String source;
     private String encoding;
-    private String uniquenessUsername;
-    private String uniquenessEmail;
+    private String usernameUniquenessMessage;
+    private String emailUniquenessMessage;
 
 
 }

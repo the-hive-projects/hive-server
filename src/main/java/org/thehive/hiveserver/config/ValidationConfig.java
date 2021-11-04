@@ -6,6 +6,9 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
+import org.thehive.hiveserver.service.UserService;
+import org.thehive.hiveserver.validation.UserUniquenessValidationFilter;
+import org.thehive.hiveserver.validation.UserUniquenessValidationFilterImpl;
 import org.thehive.hiveserver.validation.ValidationErrorMessageFormatter;
 import org.thehive.hiveserver.validation.ValidationErrorMessageProperties;
 
@@ -16,6 +19,13 @@ public class ValidationConfig {
     @Bean
     public ValidationErrorMessageProperties validationErrorMessageProperties() {
         return new ValidationErrorMessageProperties();
+    }
+
+    @Bean
+    public UserUniquenessValidationFilter userUniquenessValidationFilter(UserService userService){
+        return new UserUniquenessValidationFilterImpl(userService,
+                validationErrorMessageProperties().getUsernameUniquenessMessage(),
+                validationErrorMessageProperties().getUsernameUniquenessMessage());
     }
 
     @Bean

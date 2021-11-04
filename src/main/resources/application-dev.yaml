@@ -49,6 +49,5 @@ validation:
       suffix: ']'
       source: classpath:messages
       encoding: UTF-8
-      uniqueness:
-        username: Username
-        email: Username
+      usernameUniquenessMessage: Username is already taken
+      emailUniquenessMessage: Email is already taken
