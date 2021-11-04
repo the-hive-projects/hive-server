@@ -6,9 +6,9 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication(proxyBeanMethods = false)
 public class HiveServerApplication {
 
-    // TODO: 10/31/2021 user entity validation
-    // TODO: 10/31/2021 session external service
-    // TODO: 10/31/2021 custom persistence error or return 404 instead of internal server error
+    // TODO: 10/31/2021 websocket session external service
+    // TODO: 11/4/2021 json marshalling null handling
+    // TODO: 11/4/2021 json unmarshalling unknown field handling
 
     public static void main(String[] args) {
         SpringApplication.run(HiveServerApplication.class, args);
