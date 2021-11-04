@@ -44,5 +44,11 @@ validation:
   error:
     message:
       delimiter: ','
+      separator: ':'
       prefix: '['
       suffix: ']'
+      source: classpath:messages
+      encoding: UTF-8
+      uniqueness:
+        username: Username
+        email: Username

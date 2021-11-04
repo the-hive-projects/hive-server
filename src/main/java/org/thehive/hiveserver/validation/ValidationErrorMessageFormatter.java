@@ -10,13 +10,14 @@ import java.util.StringJoiner;
 public class ValidationErrorMessageFormatter {
 
     private final String delimiter;
+    private final String separator;
     private final String prefix;
     private final String suffix;
 
     public String format(@NotNull BindingResult bindingResult) {
         var message = new StringJoiner(delimiter, prefix, suffix);
         bindingResult.getAllErrors()
-                .forEach(i -> message.add(i.getDefaultMessage()));
+                .forEach(i -> message.add(i.getObjectName() + separator + i.getDefaultMessage()));
         return message.toString();
     }
 

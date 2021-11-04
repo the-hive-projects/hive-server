@@ -1,30 +1,28 @@
 package org.thehive.hiveserver.config;
 
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.MessageSource;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.validation.beanvalidation.LocalValidatorFactoryBean;
 import org.thehive.hiveserver.validation.ValidationErrorMessageFormatter;
+import org.thehive.hiveserver.validation.ValidationErrorMessageProperties;
 
 @Configuration
 public class ValidationConfig {
 
-    @Value("${validation.error.message.delimiter}")
-    private String validationErrorMessageDelimiter;
-
-    @Value("${validation.error.message.prefix}")
-    private String validationErrorMessagePrefix;
-
-    @Value("${validation.error.message.suffix}")
-    private String validationErrorMessageSuffix;
+    @ConfigurationProperties(prefix = "validation.error.message")
+    @Bean
+    public ValidationErrorMessageProperties validationErrorMessageProperties() {
+        return new ValidationErrorMessageProperties();
+    }
 
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename("classpath:messages");
-        messageSource.setDefaultEncoding("UTF-8");
+        messageSource.setBasename(validationErrorMessageProperties().getSource());
+        messageSource.setDefaultEncoding(validationErrorMessageProperties().getEncoding());
         return messageSource;
     }
 
@@ -37,7 +35,11 @@ public class ValidationConfig {
 
     @Bean
     public ValidationErrorMessageFormatter validationErrorMessageFormatter() {
-        return new ValidationErrorMessageFormatter(validationErrorMessageDelimiter, validationErrorMessagePrefix, validationErrorMessageSuffix);
+        return new ValidationErrorMessageFormatter(
+                validationErrorMessageProperties().getDelimiter(),
+                validationErrorMessageProperties().getSeparator(),
+                validationErrorMessageProperties().getPrefix(),
+                validationErrorMessageProperties().getSuffix());
     }
 
 }
