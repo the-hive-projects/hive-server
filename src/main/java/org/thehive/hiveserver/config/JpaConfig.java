@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.data.domain.AuditorAware;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.thehive.hiveserver.entity.User;
 import org.thehive.hiveserver.security.SecurityUser;
@@ -26,6 +27,8 @@ public class JpaConfig {
         @Override
         public Optional<User> getCurrentAuditor() {
             var authentication = SecurityContextHolder.getContext().getAuthentication();
+            if (authentication instanceof AnonymousAuthenticationToken)
+                return Optional.empty();
             var securityUser = (SecurityUser) authentication.getPrincipal();
             var user = new User();
             user.setId(securityUser.getId());

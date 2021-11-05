@@ -16,6 +16,7 @@ public class ExceptionErrorAttributes extends DefaultErrorAttributes {
     @Override
     public Map<String, Object> getErrorAttributes(WebRequest webRequest, ErrorAttributeOptions options) {
         var errorAttributes = super.getErrorAttributes(webRequest, options);
+        errorAttributes.put("timestamp", System.currentTimeMillis());
         if (includeMethod && webRequest instanceof ServletWebRequest) {
             var servletWebRequest = (ServletWebRequest) webRequest;
             var method = servletWebRequest.getHttpMethod();

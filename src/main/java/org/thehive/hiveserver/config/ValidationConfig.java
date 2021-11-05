@@ -17,22 +17,22 @@ public class ValidationConfig {
 
     @ConfigurationProperties(prefix = "validation")
     @Bean
-    public ValidationProperties validationErrorMessageProperties() {
+    public ValidationProperties validationProperties() {
         return new ValidationProperties();
     }
 
     @Bean
     public UserUniquenessValidationFilter userUniquenessValidationFilter(UserService userService) {
         return new UserUniquenessValidationFilterImpl(userService,
-                validationErrorMessageProperties().getMessage().getUniqueness().getUsername(),
-                validationErrorMessageProperties().getMessage().getUniqueness().getEmail());
+                validationProperties().getMessage().getUniqueness().getUsername(),
+                validationProperties().getMessage().getUniqueness().getEmail());
     }
 
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename(validationErrorMessageProperties().getMessage().getSource());
-        messageSource.setDefaultEncoding(validationErrorMessageProperties().getMessage().getSource());
+        messageSource.setBasename(validationProperties().getMessage().getSource());
+        messageSource.setDefaultEncoding(validationProperties().getMessage().getEncoding());
         return messageSource;
     }
 
@@ -45,7 +45,7 @@ public class ValidationConfig {
 
     @Bean
     public ValidationErrorMessageFormatter validationErrorMessageFormatter() {
-        return new ValidationErrorMessageFormatter(validationErrorMessageProperties().getMessage().getFormat());
+        return new ValidationErrorMessageFormatter(validationProperties().getMessage().getFormat());
     }
 
 }
