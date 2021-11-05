@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
 
-import static org.thehive.hiveserver.validation.ValidationContracts.*;
+import static org.thehive.hiveserver.validation.ValidationConstraints.*;
 
 @Getter
 @Setter

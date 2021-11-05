@@ -1,6 +1,6 @@
 package org.thehive.hiveserver.validation;
 
-public class ValidationContracts {
+public class ValidationConstraints {
 
     //---USER---
     //Username

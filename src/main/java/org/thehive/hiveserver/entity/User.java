@@ -12,7 +12,7 @@ import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-import static org.thehive.hiveserver.validation.ValidationContracts.*;
+import static org.thehive.hiveserver.validation.ValidationConstraints.*;
 
 @Getter
 @Setter
@@ -42,7 +42,7 @@ public class User {
     private String password;
 
     @Valid
-    @NotNull
+    @NotNull(message = "{user.userinfo}")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_info_id", nullable = false)
