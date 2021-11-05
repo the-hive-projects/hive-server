@@ -5,11 +5,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.thehive.hiveserver.entity.Session;
-import org.thehive.hiveserver.entity.User;
-import org.thehive.hiveserver.security.SecurityUtils;
 import org.thehive.hiveserver.service.SessionService;
-
-import javax.servlet.http.HttpServletRequest;
 
 @RequiredArgsConstructor
 @RestController
@@ -26,10 +22,7 @@ public class SessionApi {
 
     @PostMapping
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
-    public Session save(@RequestBody Session session, HttpServletRequest request) {
-        var securityUser = SecurityUtils.extractSecurityUser(request);
-        session.setUser(new User());
-        session.getUser().setId(securityUser.getId());
+    public Session save(@RequestBody Session session) {
         return sessionService.save(session);
     }
 

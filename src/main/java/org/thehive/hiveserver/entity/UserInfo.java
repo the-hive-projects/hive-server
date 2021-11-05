@@ -2,6 +2,8 @@ package org.thehive.hiveserver.entity;
 
 import lombok.*;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
 import javax.validation.constraints.Pattern;
@@ -13,6 +15,7 @@ import static org.thehive.hiveserver.validation.ValidationContracts.*;
 @With
 @AllArgsConstructor
 @NoArgsConstructor
+@EntityListeners(AuditingEntityListener.class)
 @Entity(name = "userInfo")
 @Table(name = "user_infos")
 public class UserInfo {
@@ -29,6 +32,7 @@ public class UserInfo {
     @Pattern(regexp = USERINFO_LASTNAME_PATTERN_REGEXP, message = "{userinfo.lastname.pattern}")
     private String lastname;
 
+    @CreatedDate
     private Long createdAt;
 
 }
