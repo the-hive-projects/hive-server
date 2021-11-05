@@ -10,29 +10,29 @@ import org.thehive.hiveserver.service.UserService;
 import org.thehive.hiveserver.validation.UserUniquenessValidationFilter;
 import org.thehive.hiveserver.validation.UserUniquenessValidationFilterImpl;
 import org.thehive.hiveserver.validation.ValidationErrorMessageFormatter;
-import org.thehive.hiveserver.validation.ValidationErrorMessageProperties;
+import org.thehive.hiveserver.validation.ValidationProperties;
 
 @Configuration
 public class ValidationConfig {
 
-    @ConfigurationProperties(prefix = "validation.error.message")
+    @ConfigurationProperties(prefix = "validation")
     @Bean
-    public ValidationErrorMessageProperties validationErrorMessageProperties() {
-        return new ValidationErrorMessageProperties();
+    public ValidationProperties validationErrorMessageProperties() {
+        return new ValidationProperties();
     }
 
     @Bean
-    public UserUniquenessValidationFilter userUniquenessValidationFilter(UserService userService){
+    public UserUniquenessValidationFilter userUniquenessValidationFilter(UserService userService) {
         return new UserUniquenessValidationFilterImpl(userService,
-                validationErrorMessageProperties().getUsernameUniquenessMessage(),
-                validationErrorMessageProperties().getUsernameUniquenessMessage());
+                validationErrorMessageProperties().getMessage().getUniqueness().getUsername(),
+                validationErrorMessageProperties().getMessage().getUniqueness().getEmail());
     }
 
     @Bean
     public MessageSource messageSource() {
         ReloadableResourceBundleMessageSource messageSource = new ReloadableResourceBundleMessageSource();
-        messageSource.setBasename(validationErrorMessageProperties().getSource());
-        messageSource.setDefaultEncoding(validationErrorMessageProperties().getEncoding());
+        messageSource.setBasename(validationErrorMessageProperties().getMessage().getSource());
+        messageSource.setDefaultEncoding(validationErrorMessageProperties().getMessage().getSource());
         return messageSource;
     }
 
@@ -45,11 +45,7 @@ public class ValidationConfig {
 
     @Bean
     public ValidationErrorMessageFormatter validationErrorMessageFormatter() {
-        return new ValidationErrorMessageFormatter(
-                validationErrorMessageProperties().getDelimiter(),
-                validationErrorMessageProperties().getSeparator(),
-                validationErrorMessageProperties().getPrefix(),
-                validationErrorMessageProperties().getSuffix());
+        return new ValidationErrorMessageFormatter(validationErrorMessageProperties().getMessage().getFormat());
     }
 
 }

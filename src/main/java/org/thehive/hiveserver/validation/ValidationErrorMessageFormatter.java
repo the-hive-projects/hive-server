@@ -1,6 +1,6 @@
 package org.thehive.hiveserver.validation;
 
-import lombok.Data;
+import lombok.*;
 import org.springframework.validation.BindingResult;
 
 import javax.validation.constraints.NotNull;
@@ -9,16 +9,26 @@ import java.util.StringJoiner;
 @Data
 public class ValidationErrorMessageFormatter {
 
-    private final String delimiter;
-    private final String separator;
-    private final String prefix;
-    private final String suffix;
+    private final FormatOptions formatOptions;
 
     public String format(@NotNull BindingResult bindingResult) {
-        var message = new StringJoiner(delimiter, prefix, suffix);
+        var message = new StringJoiner(formatOptions.delimiter, formatOptions.prefix, formatOptions.suffix);
         bindingResult.getAllErrors()
-                .forEach(i -> message.add(i.getObjectName() + separator + i.getDefaultMessage()));
+                .forEach(i -> message.add(i.getObjectName() + formatOptions.separator + i.getDefaultMessage()));
         return message.toString();
+    }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class FormatOptions {
+
+        private String delimiter;
+        private String separator;
+        private String prefix;
+        private String suffix;
+
     }
 
 }
