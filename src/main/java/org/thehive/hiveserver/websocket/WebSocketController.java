@@ -8,6 +8,7 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 
 import java.security.Principal;
@@ -18,10 +19,10 @@ public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/chat/{id}")
-    public void echo(@DestinationVariable("id") String id, @Payload String message) {
-        System.out.println(message);
-        messagingTemplate.convertAndSend("/topic/"+id,message);
+    @MessageMapping("/session/{id}")
+    public void echo(@DestinationVariable("id") String id, @Payload String message, Authentication authentication) {
+        var msg=authentication.getName()+" : "+message;
+        messagingTemplate.convertAndSend("/topic/"+id,msg);
     }
 
 }

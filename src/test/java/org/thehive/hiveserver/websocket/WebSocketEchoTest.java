@@ -20,7 +20,7 @@ class WebSocketEchoTest {
         WebSocketStompClient stompClient = new WebSocketStompClient(client);
         stompClient.setMessageConverter(new StringMessageConverter());
         var headers = new WebSocketHttpHeaders();
-        headers.add("Authorization", "Basic dGVzdC11c2VybmFtZS0wMTpwYXNzd29yZA==");
+        headers.add("Authorization", "Basic dXNlcjpwYXNzd29yZA==");
         stompClient.connect("ws://localhost:8080/stomp", headers, new StompSessionHandler() {
 
             @Override
@@ -52,7 +52,7 @@ class WebSocketEchoTest {
                 });
                 Thread.sleep(5000);
                 System.out.println("Sending");
-                session.send("/websocket/chat/mesa", "asdasd");
+                session.send("/websocket/session/mesa", "asdasd");
             }
 
             @Override
