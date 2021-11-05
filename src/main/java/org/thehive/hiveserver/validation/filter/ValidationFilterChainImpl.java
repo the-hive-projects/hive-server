@@ -16,7 +16,7 @@ public class ValidationFilterChainImpl<T> implements ValidationFilterChain<T> {
     }
 
     @Override
-    public void applyFilters(T object, BindingResult bindingResult) throws BindException {
+    public void applyFilters(@NonNull T object, @NonNull BindingResult bindingResult) throws BindException {
         validationFilterSet.parallelStream().forEach(vf -> vf.applyFilter(object, bindingResult));
         if (bindingResult.hasErrors())
             throw new BindException(bindingResult);

@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import org.thehive.hiveserver.entity.User;
 import org.thehive.hiveserver.security.SecurityUtils;
 import org.thehive.hiveserver.service.UserService;
-import org.thehive.hiveserver.validation.UserUniquenessValidationFilter;
+import org.thehive.hiveserver.validation.filter.ValidationFilterChain;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -21,7 +21,7 @@ import javax.validation.Valid;
 public class UserApi {
 
     private final UserService userService;
-    private final UserUniquenessValidationFilter userUniquenessValidationFilter;
+    private final ValidationFilterChain<User> userValidationFilterChain;
 
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
@@ -41,7 +41,7 @@ public class UserApi {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public User saveUser(@Valid @RequestBody User user, BindingResult bindingResult) throws BindException {
-        userUniquenessValidationFilter.uniquenessFilter(user, bindingResult);
+        userValidationFilterChain.applyFilters(user, bindingResult);
         return userService.save(user);
     }
 
