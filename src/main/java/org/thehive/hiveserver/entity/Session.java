@@ -1,9 +1,7 @@
 package org.thehive.hiveserver.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.*;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 
@@ -17,8 +15,6 @@ import javax.persistence.*;
 public class Session {
 
     @Id
-    @GenericGenerator(name = "session_id_generator",strategy = "org.thehive.hiveserver.session.SessionIdGenerator")
-    @GeneratedValue(generator = "session_id_generator")
     private String id;
 
     private String name;

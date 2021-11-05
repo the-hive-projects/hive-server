@@ -51,3 +51,9 @@ validation:
       encoding: UTF-8
       usernameUniquenessMessage: Username is already taken
       emailUniquenessMessage: Email is already taken
+
+session:
+  id:
+    length: 11
+    generator:
+      type: NUMERICAL
