@@ -6,7 +6,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.thehive.hiveserver.entity.User;
-import org.thehive.hiveserver.entity.UserInfo;
 import org.thehive.hiveserver.repository.UserRepository;
 
 @RequiredArgsConstructor
@@ -48,6 +47,16 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByUsername(username)
                 .orElseThrow(() -> new EmptyResultDataAccessException(
                         String.format("No class %s entity with username %s exists!", User.class.getName(), username), 1));
+    }
+
+    @Override
+    public boolean existsByUsername(@NonNull String username) {
+        return userRepository.existsByUsername(username);
+    }
+
+    @Override
+    public boolean existsByEmail(@NonNull String email) {
+        return userRepository.existsByEmail(email);
     }
 
     @Override

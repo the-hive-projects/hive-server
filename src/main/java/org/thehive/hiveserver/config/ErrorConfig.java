@@ -18,7 +18,7 @@ public class ErrorConfig {
     }
 
     @Bean
-    public ErrorAttributes errorAttributes(@Value("${server.error.include-method:true}") boolean includeMethod){
+    public ErrorAttributes errorAttributes(@Value("${server.error.include-method}") boolean includeMethod){
         return new ExceptionErrorAttributes(includeMethod);
     }
 

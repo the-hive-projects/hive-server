@@ -41,8 +41,20 @@ management:
         include: '*'
 
 validation:
-  error:
-    message:
+  message:
+    source: classpath:messages
+    encoding: UTF-8
+    format:
       delimiter: ','
+      separator: ':'
       prefix: '['
       suffix: ']'
+    uniqueness:
+      username: "Username '{}' is already taken"
+      email: "Email '{}' is already taken"
+
+session:
+  id:
+    length: 11
+    generator:
+      type: NUMERICAL
