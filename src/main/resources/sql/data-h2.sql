@@ -202,3 +202,5 @@ values (1, 'user', '{noop}password', 'user@mail.com', 1),
        (99, 'vgoodfield2q', '{noop}qo5oyBhg5', 'ewyss2q@ihg.com', 99),
        (100, 'jmapam2r', '{noop}GczdlPd0d1el', 'shardbattle2r@nih.gov', 100);
 
+INSERT INTO sessions (id, name, user_id, created_at)
+VALUES ('00000000000', 'test-session', 1, SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000)
