@@ -1,11 +1,13 @@
 package org.thehive.hiveserver.websocket.message;
 
-import org.thehive.hiveserver.websocket.message.payload.Payload;
+import java.util.Map;
 
-public interface Message <T extends Payload> {
+public interface Message<T> {
 
-    Header header();
+    MessageType getType();
 
-    T payload();
+    Map<String, Object> getHeaders();
+
+    T getPayload();
 
 }
