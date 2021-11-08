@@ -3,14 +3,24 @@ package org.thehive.hiveserver.websocket.message;
 import lombok.*;
 import org.springframework.lang.Nullable;
 
+import java.util.HashMap;
 import java.util.Map;
 
-@Data
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@Getter
+@Setter
+@ToString
+@EqualsAndHashCode
 public abstract class AbstractMessage<T> implements Message<T> {
 
     private Map<String, Object> headers;
+
+    protected AbstractMessage(@NonNull Map<String, Object> headers) {
+        this.headers = headers;
+    }
+
+    protected AbstractMessage() {
+        this(new HashMap<>(4));
+    }
 
     @Override
     public Map<String, Object> getHeaders() {

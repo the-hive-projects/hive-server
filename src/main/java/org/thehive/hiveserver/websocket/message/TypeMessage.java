@@ -1,23 +1,25 @@
 package org.thehive.hiveserver.websocket.message;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.thehive.hiveserver.websocket.message.payload.Payload;
 
 import java.util.Map;
 
-@Data
+@Getter
+@Setter
+@ToString
 @EqualsAndHashCode(callSuper = true)
-@AllArgsConstructor
-@NoArgsConstructor
 public class TypeMessage<T extends Payload> extends AbstractMessage<T> {
 
     private MessageType type;
     private T payload;
 
-    public TypeMessage(Map<String, Object> headers, MessageType type, T payload) {
+    public TypeMessage(@NonNull MessageType type, @NonNull T payload) {
+        this.type = type;
+        this.payload = payload;
+    }
+
+    public TypeMessage(@NonNull MessageType type, @NonNull Map<String, Object> headers, @NonNull T payload) {
         super(headers);
         this.type = type;
         this.payload = payload;

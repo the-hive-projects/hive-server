@@ -14,27 +14,11 @@ public class MessageMarshallerImpl implements MessageMarshaller {
     @Override
     public RawMessage marshall(@NonNull TypeMessage<? extends Payload> message) throws MessageMarshallingException {
         try {
-            var rawMessage = new RawMessage();
-            rawMessage.setType(message.getType());
-            rawMessage.setHeaders(message.getHeaders());
-            rawMessage.setPayload(objectMapper.writeValueAsString(message));
-            return rawMessage;
+            return new RawMessage(
+                    message.getType(),
+                    message.getHeaders(),
+                    objectMapper.writeValueAsString(message.getPayload()));
         } catch (JsonProcessingException e) {
-            throw MessageMarshallingException.wrap(e);
-        }
-    }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public <T extends Payload> TypeMessage<T> unmarshall(@NonNull RawMessage message) throws MessageMarshallingException {
-        try {
-            var typeMessage = new TypeMessage<T>();
-            typeMessage.setType(message.getType());
-            typeMessage.setHeaders(message.getHeaders());
-            var payload = objectMapper.readValue(message.getPayload(), message.getType().payloadType);
-            typeMessage.setPayload((T) payload);
-            return typeMessage;
-        } catch (JsonProcessingException | ClassCastException e) {
             throw MessageMarshallingException.wrap(e);
         }
     }
@@ -44,13 +28,11 @@ public class MessageMarshallerImpl implements MessageMarshaller {
         try {
             if (type != message.getType().payloadType)
                 throw new IllegalArgumentException("Message's type and parameter type is not compatible");
-            var typeMessage = new TypeMessage<T>();
-            typeMessage.setType(message.getType());
-            typeMessage.setHeaders(message.getHeaders());
-            var payload = objectMapper.readValue(message.getPayload(), type);
-            typeMessage.setPayload(payload);
-            return typeMessage;
-        } catch (JsonProcessingException | ClassCastException | IllegalArgumentException e) {
+            return new TypeMessage<>(
+                    message.getType(),
+                    message.getHeaders(),
+                    objectMapper.readValue(message.getPayload(), type));
+        } catch (JsonProcessingException | IllegalArgumentException e) {
             throw MessageMarshallingException.wrap(e);
         }
     }
