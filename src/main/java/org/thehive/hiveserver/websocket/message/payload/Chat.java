@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Chat implements Payload {
+public final class Chat implements Payload {
 
     private long timestamp;
     private String text;
