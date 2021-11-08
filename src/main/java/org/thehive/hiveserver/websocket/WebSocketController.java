@@ -8,7 +8,6 @@ import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.thehive.hiveserver.websocket.message.Message;
 import org.thehive.hiveserver.websocket.message.MessageMarshaller;
 import org.thehive.hiveserver.websocket.message.RawMessage;
 
@@ -22,9 +21,7 @@ public class WebSocketController {
 
     @MessageMapping("/session/{id}")
     public void session(@DestinationVariable("id") String id, @Payload RawMessage message, Authentication authentication) {
-        message.addHeader(Message.HEADER_TIMESTAMP, System.currentTimeMillis());
-        message.addHeader(Message.HEADER_PRINCIPAL, authentication.getPrincipal());
-        System.out.println(message);
+        log.info("Message: {}", message);
         messagingTemplate.convertAndSend("/topic/" + id, message);
     }
 

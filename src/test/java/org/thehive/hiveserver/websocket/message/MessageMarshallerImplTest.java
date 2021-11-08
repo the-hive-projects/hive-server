@@ -60,7 +60,7 @@ class MessageMarshallerImplTest {
         var rawMessage = new RawMessage(MessageType.CHAT, payload);
         log.info("Raw message: {}", rawMessage);
         assertThrows(MessageMarshallingException.class,
-                ()-> messageMarshaller.unmarshall(rawMessage, Information.class));
+                () -> messageMarshaller.unmarshall(rawMessage, Information.class));
     }
 
 }

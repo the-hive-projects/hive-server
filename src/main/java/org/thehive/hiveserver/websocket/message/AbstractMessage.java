@@ -48,4 +48,9 @@ public abstract class AbstractMessage<T> implements Message<T> {
         return headers.containsKey(key);
     }
 
+    public void clearHeaders() {
+        if (headers != null)
+            headers.clear();
+    }
+
 }
