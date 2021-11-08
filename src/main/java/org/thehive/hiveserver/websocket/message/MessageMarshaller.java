@@ -8,4 +8,6 @@ public interface MessageMarshaller {
 
     <T extends Payload> TypeMessage<T> unmarshall(RawMessage message) throws MessageMarshallingException;
 
+    <T extends Payload> TypeMessage<T> unmarshall(RawMessage message,Class<T> type) throws MessageMarshallingException;
+
 }

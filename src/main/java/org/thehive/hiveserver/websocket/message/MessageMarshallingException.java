@@ -1,6 +1,6 @@
 package org.thehive.hiveserver.websocket.message;
 
-public class MessageMarshallingException extends RuntimeException{
+public class MessageMarshallingException extends RuntimeException {
 
     public MessageMarshallingException() {
     }
@@ -15,6 +15,10 @@ public class MessageMarshallingException extends RuntimeException{
 
     public MessageMarshallingException(Throwable cause) {
         super(cause);
+    }
+
+    public static MessageMarshallingException wrap(Throwable t) {
+        return new MessageMarshallingException(t);
     }
 
 }
