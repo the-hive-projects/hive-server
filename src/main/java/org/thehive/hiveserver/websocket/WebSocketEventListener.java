@@ -15,25 +15,29 @@ import org.thehive.hiveserver.websocket.payload.Information;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
+@Slf4j(topic = "session")
 public class WebSocketEventListener {
 
     private final SimpMessagingTemplate messagingTemplate;
 
     @EventListener
     public void handleSessionConnected(SessionConnectEvent event) {
-        log.info("handleSessionConnected");
+        var securityUser = WebSocketUtils.extractSecurityUser(event);
+        log.info("Session Connection - user: {}", securityUser);
     }
 
     @EventListener
     public void handleSessionDisconnect(SessionDisconnectEvent event) {
-        log.info("handleSessionDisconnect");
+        var securityUser = WebSocketUtils.extractSecurityUser(event);
+        log.info("Session Disconnection - user: {}", securityUser);
     }
 
     @EventListener
     public void handleSessionSubscribeEvent(SessionSubscribeEvent event) {
-        log.info("handleSessionSubscribeEvent");
+        var securityUser = WebSocketUtils.extractSecurityUser(event);
         var destination = WebSocketUtils.extractDestination(event);
+        log.info("Session Subscribe - destination: {}, user: {}", destination, securityUser);
+        //Send join information to all user in that session
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.INFORMATION);
         var info = new Information();
@@ -45,7 +49,17 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleSessionUnsubscribeEvent(SessionUnsubscribeEvent event) {
-        log.info("handleSessionUnsubscribeEvent");
+        var securityUser = WebSocketUtils.extractSecurityUser(event);
+        var destination = WebSocketUtils.extractDestination(event);
+        log.info("Session Subscribe - destination: {}, user: {}", destination, securityUser);
+        //Send leave information to all user in that session
+        var headers = new AppHeaders();
+        headers.setPayloadType(PayloadType.INFORMATION);
+        var info = new Information();
+        info.setTimestamp(System.currentTimeMillis());
+        info.setText("User '" + event.getUser().getName() + "' left");
+        info.setTitle("Left");
+        messagingTemplate.convertAndSend(destination, info, headers);
     }
 
 }
