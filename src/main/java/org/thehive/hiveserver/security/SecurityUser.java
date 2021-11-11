@@ -3,11 +3,13 @@ package org.thehive.hiveserver.security;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 import org.springframework.security.core.userdetails.User;
 
 import java.util.Collections;
 
 @Getter
+@ToString
 @EqualsAndHashCode(callSuper = true)
 public class SecurityUser extends User {
 

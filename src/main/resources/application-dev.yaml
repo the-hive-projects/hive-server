@@ -58,3 +58,9 @@ session:
     length: 11
     generator:
       type: NUMERICAL
+
+image:
+  generator:
+    random:
+      size: 8
+      minSquare: 5
