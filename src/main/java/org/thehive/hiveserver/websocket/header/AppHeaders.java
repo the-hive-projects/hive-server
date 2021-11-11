@@ -8,7 +8,7 @@ public class AppHeaders extends HashMap<String, Object> {
 
     public static final String PAYLOAD_TYPE = "payload-type";
 
-    public void payloadType(@NonNull PayloadType payloadType) {
+    public void setPayloadType(@NonNull PayloadType payloadType) {
         put(PAYLOAD_TYPE, payloadType.value);
     }
 
