@@ -37,14 +37,15 @@ public class WebSocketEventListener {
         var securityUser = WebSocketUtils.extractSecurityUser(event);
         var destination = WebSocketUtils.extractDestination(event);
         log.info("Session Subscribe - destination: {}, user: {}", destination, securityUser);
-        //Send join information to all user in that session
-        var headers = new AppHeaders();
-        headers.setPayloadType(PayloadType.INFORMATION);
-        var info = new Information();
-        info.setTimestamp(System.currentTimeMillis());
-        info.setText("User '" + event.getUser().getName() + "' joined");
-        info.setTitle("Join");
-        messagingTemplate.convertAndSend(destination, info, headers);
+        if (destination.startsWith("/topic/session")) {
+            var headers = new AppHeaders();
+            headers.setPayloadType(PayloadType.INFORMATION);
+            var info = new Information();
+            info.setTitle("Join");
+            info.setText("User '" + securityUser.getUsername() + "' joined");
+            info.setTimestamp(System.currentTimeMillis());
+            messagingTemplate.convertAndSend(destination, info, headers);
+        }
     }
 
     @EventListener
@@ -52,14 +53,15 @@ public class WebSocketEventListener {
         var securityUser = WebSocketUtils.extractSecurityUser(event);
         var destination = WebSocketUtils.extractDestination(event);
         log.info("Session Subscribe - destination: {}, user: {}", destination, securityUser);
-        //Send leave information to all user in that session
-        var headers = new AppHeaders();
-        headers.setPayloadType(PayloadType.INFORMATION);
-        var info = new Information();
-        info.setTimestamp(System.currentTimeMillis());
-        info.setText("User '" + event.getUser().getName() + "' left");
-        info.setTitle("Left");
-        messagingTemplate.convertAndSend(destination, info, headers);
+        if (destination.startsWith("/chat")) {
+            var headers = new AppHeaders();
+            headers.setPayloadType(PayloadType.INFORMATION);
+            var info = new Information();
+            info.setTitle("Left");
+            info.setText("User '" + securityUser.getUsername() + "' left");
+            info.setTimestamp(System.currentTimeMillis());
+            messagingTemplate.convertAndSend(destination, info, headers);
+        }
     }
 
 }
