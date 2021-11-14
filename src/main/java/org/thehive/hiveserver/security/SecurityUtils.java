@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 public class SecurityUtils {
 
-    public static SecurityUser extractSecurityUser(@NonNull HttpServletRequest request) {
+    public static SecurityUser extractSecurityUser(@NonNull HttpServletRequest request) throws IllegalStateException {
         var auth = (Authentication) request.getUserPrincipal();
         if (!auth.isAuthenticated())
             throw new IllegalStateException("Unauthorized");

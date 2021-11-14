@@ -15,17 +15,18 @@ import org.thehive.hiveserver.websocket.payload.Chat;
 @Slf4j
 @Controller
 @RequiredArgsConstructor
-public class ChatWebSocketController {
+public class SessionWebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/chat/{id}")
+    @MessageMapping("/session/chat/{id}")
     public void chat(@DestinationVariable("id") String id, @Payload Chat chat, Authentication authentication) {
         chat.setFrom(authentication.getName());
+        chat.setTimestamp(System.currentTimeMillis());
         var headers = new AppHeaders();
-        headers.payloadType(PayloadType.CHAT);
+        headers.setPayloadType(PayloadType.CHAT);
         log.info("Chat - payload: {}, headers: {}", chat, headers);
-        messagingTemplate.convertAndSend("/topic/" + id, chat, headers);
+        messagingTemplate.convertAndSend("/topic/session/" + id, chat, headers);
     }
 
 }
