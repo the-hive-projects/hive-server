@@ -1,6 +1,7 @@
 package org.thehive.hiveserver.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -14,7 +15,11 @@ public class SecurityUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String s) throws UsernameNotFoundException {
-        return appUserOf(userService.findByUsername(s));
+        try {
+            return appUserOf(userService.findByUsername(s));
+        } catch (EmptyResultDataAccessException e) {
+            throw new UsernameNotFoundException("User not found", e);
+        }
     }
 
     private SecurityUser appUserOf(User user) {

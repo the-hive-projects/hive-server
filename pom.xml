@@ -12,7 +12,7 @@
 
     <groupId>org.thehive</groupId>
     <artifactId>hive-server</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>1.0.0</version>
 
     <name>hive-server</name>
     <description>Server project of Hive</description>
