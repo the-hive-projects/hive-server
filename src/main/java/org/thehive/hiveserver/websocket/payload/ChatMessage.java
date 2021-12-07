@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public final class Chat implements Payload {
+public final class ChatMessage implements Payload {
 
     private String from;
     private String text;

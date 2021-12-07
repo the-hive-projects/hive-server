@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public final class Information implements Payload {
+public final class JoinNotification implements Payload {
 
     private String title;
     private String text;

@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.thehive.hiveserver.websocket.header.AppHeaders;
 import org.thehive.hiveserver.websocket.header.PayloadType;
-import org.thehive.hiveserver.websocket.payload.Chat;
+import org.thehive.hiveserver.websocket.payload.ChatMessage;
 
 @Slf4j
 @Controller
@@ -19,14 +19,14 @@ public class SessionWebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/session/chat/{id}")
-    public void chat(@DestinationVariable("id") String id, @Payload Chat chat, Authentication authentication) {
-        chat.setFrom(authentication.getName());
-        chat.setTimestamp(System.currentTimeMillis());
+    @MessageMapping("/session/chatMessage/{id}")
+    public void chat(@DestinationVariable("id") String id, @Payload ChatMessage chatMessage, Authentication authentication) {
+        chatMessage.setFrom(authentication.getName());
+        chatMessage.setTimestamp(System.currentTimeMillis());
         var headers = new AppHeaders();
-        headers.setPayloadType(PayloadType.CHAT);
-        log.info("Chat - payload: {}, headers: {}", chat, headers);
-        messagingTemplate.convertAndSend("/topic/session/" + id, chat, headers);
+        headers.setPayloadType(PayloadType.CHAT_MESSAGE);
+        log.info("ChatMessage - payload: {}, headers: {}", chatMessage, headers);
+        messagingTemplate.convertAndSend("/topic/session/" + id, chatMessage, headers);
     }
 
 }
