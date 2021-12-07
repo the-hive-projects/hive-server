@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 import org.thehive.hiveserver.entity.Session;
 import org.thehive.hiveserver.service.SessionService;
+import org.thehive.hiveserver.session.LiveSessionManager;
 
 @RequiredArgsConstructor
 @RestController
@@ -13,6 +14,7 @@ import org.thehive.hiveserver.service.SessionService;
 public class SessionApi {
 
     private final SessionService sessionService;
+    private final LiveSessionManager sessionManager;
 
     @GetMapping("/{id}")
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
@@ -23,7 +25,9 @@ public class SessionApi {
     @PostMapping
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
     public Session save(@RequestBody Session session) {
-        return sessionService.save(session);
+        var savedSession = sessionService.save(session);
+        sessionManager.startSession(savedSession);
+        return savedSession;
     }
 
 }

@@ -3,9 +3,7 @@ package org.thehive.hiveserver.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.thehive.hiveserver.session.NumericalSessionIdGenerator;
-import org.thehive.hiveserver.session.SessionIdGenerator;
-import org.thehive.hiveserver.session.SessionProperties;
+import org.thehive.hiveserver.session.*;
 
 @Configuration
 public class SessionConfig {
@@ -26,6 +24,11 @@ public class SessionConfig {
                 throw new IllegalStateException("Session type is not supported, sessionType: " +
                         sessionProperties.getId().getGenerator().getType());
         }
+    }
+
+    @Bean
+    public LiveSessionManager liveSessionManager() {
+        return new LiveSessionManagerImpl();
     }
 
 }
