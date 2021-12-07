@@ -54,25 +54,27 @@ public class WebSocketEventListener {
     }
 
     private String extractSessionIdFromDestination(String destination) {
-        return destination.substring(SESSION_TOPIC_DESTINATION.length() + 2);
+        return destination.substring(SESSION_TOPIC_DESTINATION.length() + 1);
     }
 
     private boolean isSessionTopicDestination(String destination) {
-        return destination.equals(SESSION_TOPIC_DESTINATION);
+        return destination.startsWith(SESSION_TOPIC_DESTINATION);
     }
 
     private void handleSessionSubscription(SessionSubscribeEvent event, String destination) {
         var securityUser = WebSocketUtils.extractSecurityUser(event);
-        log.info("Session subscription, sessionId: {}, username: {}", destination, securityUser.getUsername());
+        var sessionId = extractSessionIdFromDestination(destination);
+        log.info("Session subscription, sessionId: {}, username: {}", sessionId, securityUser.getUsername());
         sendJoinNotificationMessage(destination, securityUser.getUsername());
-        sendSessionInfoMessage(destination, securityUser.getUsername());
+        sendSessionInfoMessage(destination);
     }
 
     private void handleSessionUnsubscription(SessionUnsubscribeEvent event, String destination) {
         var securityUser = WebSocketUtils.extractSecurityUser(event);
-        log.info("Session unsubscription, sessionId: {}, username: {}", destination, securityUser.getUsername());
+        var sessionId = extractSessionIdFromDestination(destination);
+        log.info("Session unsubscription, sessionId: {}, username: {}", sessionId, securityUser.getUsername());
         sendLeaveNotificationMessage(destination, securityUser.getUsername());
-        var liveSession = sessionManager.getSession(extractSessionIdFromDestination(destination));
+        var liveSession = sessionManager.getSession(sessionId);
         if (liveSession.session.getCreatedBy().getUsername().equals(securityUser.getUsername()))
             sendTerminationNotificationMessage(destination);
     }
@@ -81,8 +83,8 @@ public class WebSocketEventListener {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.JOIN_NOTIFICATION);
         var payload = new JoinNotification();
-        payload.setTimestamp(System.currentTimeMillis());
         payload.setUsername(username);
+        payload.setTimestamp(System.currentTimeMillis());
         messagingTemplate.convertAndSend(destination, payload, headers);
     }
 
@@ -90,20 +92,20 @@ public class WebSocketEventListener {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.LEAVE_NOTIFICATION);
         var payload = new LeaveNotification();
-        payload.setTimestamp(System.currentTimeMillis());
         payload.setUsername(username);
+        payload.setTimestamp(System.currentTimeMillis());
         messagingTemplate.convertAndSend(destination, payload, headers);
     }
 
-    private void sendSessionInfoMessage(String destination, String username) {
+    private void sendSessionInfoMessage(String destination) {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.SESSION_INFORMATION);
         var liveSession = sessionManager.getSession(extractSessionIdFromDestination(destination));
         var payload = new SessionInformation();
-        payload.setTimestamp(System.currentTimeMillis());
         payload.setOwnerUsername(liveSession.session.getCreatedBy().getUsername());
         payload.setParticipantUsernameList(liveSession.getCurrentParticipantUsernameList());
-        messagingTemplate.convertAndSendToUser(username, destination, payload, headers);
+        payload.setTimestamp(System.currentTimeMillis());
+        messagingTemplate.convertAndSend(destination, payload, headers);
     }
 
     private void sendTerminationNotificationMessage(String destination) {

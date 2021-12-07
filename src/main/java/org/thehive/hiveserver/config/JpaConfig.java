@@ -32,6 +32,8 @@ public class JpaConfig {
             var securityUser = (SecurityUser) authentication.getPrincipal();
             var user = new User();
             user.setId(securityUser.getId());
+            user.setUsername(securityUser.getUsername());
+            user.setEmail(securityUser.getEmail());
             return Optional.of(user);
         }
 
