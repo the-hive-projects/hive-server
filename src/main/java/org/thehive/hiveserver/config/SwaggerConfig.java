@@ -1,6 +1,5 @@
 package org.thehive.hiveserver.config;
 
-import io.swagger.v3.oas.models.security.SecurityScheme;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
@@ -13,7 +12,6 @@ import springfox.documentation.spi.DocumentationType;
 import springfox.documentation.spring.web.plugins.Docket;
 import springfox.documentation.swagger2.annotations.EnableSwagger2;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 @Profile("dev")
@@ -28,7 +26,7 @@ public class SwaggerConfig {
                 .groupName("general-api")
                 .apiInfo(new ApiInfoBuilder()
                         .description("Hive Server API general reference")
-                        .contact(new Contact("GitHub","https://github.com/the-hive-projects",null))
+                        .contact(new Contact("GitHub", "https://github.com/the-hive-projects", null))
                         .title("General API")
                         .version("1.0")
                         .build())

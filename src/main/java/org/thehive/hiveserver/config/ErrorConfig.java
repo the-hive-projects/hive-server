@@ -13,12 +13,12 @@ public class ErrorConfig {
 
     @Bean
     @ConfigurationProperties(prefix = "server.error")
-    public ErrorProperties errorProperties(){
+    public ErrorProperties errorProperties() {
         return new ErrorProperties();
     }
 
     @Bean
-    public ErrorAttributes errorAttributes(@Value("${server.error.include-method}") boolean includeMethod){
+    public ErrorAttributes errorAttributes(@Value("${server.error.include-method}") boolean includeMethod) {
         return new ExceptionErrorAttributes(includeMethod);
     }
 

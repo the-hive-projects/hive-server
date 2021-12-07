@@ -71,7 +71,7 @@ public class AuthenticationConfig {
     @Profile("pro")
     @Bean(name = "urlEndpointWhitelist")
     public UrlEndpointWhitelist proUrlEndpointWhitelist() {
-        return new UrlEndpointWhitelist(new String[]{},new String[]{});
+        return new UrlEndpointWhitelist(new String[]{}, new String[]{});
     }
 
 }

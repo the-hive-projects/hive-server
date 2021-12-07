@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public final class JoinNotification implements Payload {
+public class LeaveNotification implements Payload {
 
     private String username;
     private long timestamp;

@@ -11,7 +11,7 @@ public class HiveServerApplication {
     // TODO: 11/4/2021 json unmarshalling unknown field handling
     // TODO: 11/6/2021 create image provider api and strategy when enable imag upload 
     // TODO: 11/6/2021 enable sessionId and add logout endpoint 
-    
+
     public static void main(String[] args) {
         SpringApplication.run(HiveServerApplication.class, args);
     }

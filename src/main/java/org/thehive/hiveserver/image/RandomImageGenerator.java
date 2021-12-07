@@ -13,7 +13,7 @@ import java.util.Random;
 @RequiredArgsConstructor
 public class RandomImageGenerator implements ImageGenerator {
 
-    private static final String FORMAT_NAME ="png";
+    private static final String FORMAT_NAME = "png";
 
     private final int size;
     private final int minSquare;
@@ -46,10 +46,10 @@ public class RandomImageGenerator implements ImageGenerator {
     }
 
     private long seedStringToLong(@NonNull String seedStr) {
-        var seed=0L;
-        var i=0;
-        for ( var b:seedStr.getBytes())
-            seed+=((long)b)*(++i);
+        var seed = 0L;
+        var i = 0;
+        for (var b : seedStr.getBytes())
+            seed += ((long) b) * (++i);
         return seed;
     }
 

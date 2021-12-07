@@ -37,7 +37,7 @@ public class SessionProperties {
             private Types type;
 
             public enum Types {
-                NUMERICAL;
+                NUMERICAL
             }
 
         }
