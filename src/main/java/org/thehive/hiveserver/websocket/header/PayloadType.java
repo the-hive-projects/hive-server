@@ -5,7 +5,8 @@ public enum PayloadType {
     JOIN_NOTIFICATION("join-notification"),
     LEAVE_NOTIFICATION("leave-notification"),
     CHAT_MESSAGE("chat-message"),
-    SESSION_INFO("session-info");
+    SESSION_INFORMATION("session-information"),
+    TERMINATION_NOTIFICATION("termination-notification");
 
     public final String value;
 

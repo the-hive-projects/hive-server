@@ -14,76 +14,104 @@ import org.thehive.hiveserver.websocket.header.AppHeaders;
 import org.thehive.hiveserver.websocket.header.PayloadType;
 import org.thehive.hiveserver.websocket.payload.JoinNotification;
 import org.thehive.hiveserver.websocket.payload.LeaveNotification;
-import org.thehive.hiveserver.websocket.payload.SessionInfo;
+import org.thehive.hiveserver.websocket.payload.SessionInformation;
+import org.thehive.hiveserver.websocket.payload.TerminationNotification;
 
 @Component
 @RequiredArgsConstructor
 @Slf4j(topic = "session")
 public class WebSocketEventListener {
 
+    private static final String SESSION_TOPIC_DESTINATION = "/topic/session";
+
     private final SimpMessagingTemplate messagingTemplate;
     private final LiveSessionManager sessionManager;
 
     @EventListener
-    public void handleSessionConnected(SessionConnectEvent event) {
+    public void handleConnection(SessionConnectEvent event) {
         var securityUser = WebSocketUtils.extractSecurityUser(event);
-        log.info("Session Connection - user: {}", securityUser);
+        log.info("Connection - user: {}", securityUser);
     }
 
     @EventListener
-    public void handleSessionDisconnect(SessionDisconnectEvent event) {
+    public void handleDisconnect(SessionDisconnectEvent event) {
         var securityUser = WebSocketUtils.extractSecurityUser(event);
-        log.info("Session Disconnection - user: {}", securityUser);
+        log.info("Disconnection - user: {}", securityUser);
     }
 
     @EventListener
-    public void handleSessionSubscribeEvent(SessionSubscribeEvent event) {
+    public void handleSubscription(SessionSubscribeEvent event) {
         var destination = WebSocketUtils.extractDestination(event);
-        var securityUser = WebSocketUtils.extractSecurityUser(event);
-        log.info("Session Subscribe - destination: {}, user: {}", destination, securityUser);
-        if (destination.startsWith("/topic/session")) {
-            sendJoinNotificationMessage(destination, securityUser.getUsername());
-            sendSessionInfoMessage(destination, securityUser.getUsername());
-        }
+        if (isSessionTopicDestination(destination))
+            handleSessionSubscription(event, destination);
     }
 
     @EventListener
-    public void handleSessionUnsubscribeEvent(SessionUnsubscribeEvent event) {
+    public void handleUnsubscription(SessionUnsubscribeEvent event) {
         var destination = WebSocketUtils.extractDestination(event);
+        if (isSessionTopicDestination(destination))
+            handleSessionUnsubscription(event, destination);
+    }
+
+    private String extractSessionIdFromDestination(String destination) {
+        return destination.substring(SESSION_TOPIC_DESTINATION.length() + 2);
+    }
+
+    private boolean isSessionTopicDestination(String destination) {
+        return destination.equals(SESSION_TOPIC_DESTINATION);
+    }
+
+    private void handleSessionSubscription(SessionSubscribeEvent event, String destination) {
         var securityUser = WebSocketUtils.extractSecurityUser(event);
-        log.info("Session Subscribe - destination: {}, user: {}", destination, securityUser);
-        if (destination.startsWith("/topic/session")) {
-            sendLeaveNotificationMessage(destination, securityUser.getUsername());
-        }
+        log.info("Session subscription, sessionId: {}, username: {}", destination, securityUser.getUsername());
+        sendJoinNotificationMessage(destination, securityUser.getUsername());
+        sendSessionInfoMessage(destination, securityUser.getUsername());
+    }
+
+    private void handleSessionUnsubscription(SessionUnsubscribeEvent event, String destination) {
+        var securityUser = WebSocketUtils.extractSecurityUser(event);
+        log.info("Session unsubscription, sessionId: {}, username: {}", destination, securityUser.getUsername());
+        sendLeaveNotificationMessage(destination, securityUser.getUsername());
+        var liveSession = sessionManager.getSession(extractSessionIdFromDestination(destination));
+        if (liveSession.session.getCreatedBy().getUsername().equals(securityUser.getUsername()))
+            sendTerminationNotificationMessage(destination);
     }
 
     private void sendJoinNotificationMessage(String destination, String username) {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.JOIN_NOTIFICATION);
-        var info = new JoinNotification();
-        info.setTimestamp(System.currentTimeMillis());
-        info.setUsername(username);
-        messagingTemplate.convertAndSend(destination, info, headers);
+        var payload = new JoinNotification();
+        payload.setTimestamp(System.currentTimeMillis());
+        payload.setUsername(username);
+        messagingTemplate.convertAndSend(destination, payload, headers);
     }
 
     private void sendLeaveNotificationMessage(String destination, String username) {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.LEAVE_NOTIFICATION);
-        var info = new LeaveNotification();
-        info.setTimestamp(System.currentTimeMillis());
-        info.setUsername(username);
-        messagingTemplate.convertAndSend(destination, info, headers);
+        var payload = new LeaveNotification();
+        payload.setTimestamp(System.currentTimeMillis());
+        payload.setUsername(username);
+        messagingTemplate.convertAndSend(destination, payload, headers);
     }
 
     private void sendSessionInfoMessage(String destination, String username) {
         var headers = new AppHeaders();
-        headers.setPayloadType(PayloadType.SESSION_INFO);
-        var liveSession = sessionManager.getSession(destination);
-        var sessionInfo = new SessionInfo();
-        sessionInfo.setTimestamp(System.currentTimeMillis());
-        sessionInfo.setOwnerUsername(liveSession.session.getCreatedBy().getUsername());
-        sessionInfo.setParticipantUsernameList(liveSession.getCurrentParticipantUsernameList());
-        messagingTemplate.convertAndSendToUser(username, destination, sessionInfo, headers);
+        headers.setPayloadType(PayloadType.SESSION_INFORMATION);
+        var liveSession = sessionManager.getSession(extractSessionIdFromDestination(destination));
+        var payload = new SessionInformation();
+        payload.setTimestamp(System.currentTimeMillis());
+        payload.setOwnerUsername(liveSession.session.getCreatedBy().getUsername());
+        payload.setParticipantUsernameList(liveSession.getCurrentParticipantUsernameList());
+        messagingTemplate.convertAndSendToUser(username, destination, payload, headers);
+    }
+
+    private void sendTerminationNotificationMessage(String destination) {
+        var headers = new AppHeaders();
+        headers.setPayloadType(PayloadType.TERMINATION_NOTIFICATION);
+        var payload = new TerminationNotification();
+        payload.setTimestamp(System.currentTimeMillis());
+        messagingTemplate.convertAndSend(destination, payload, headers);
     }
 
 }
