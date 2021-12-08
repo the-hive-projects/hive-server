@@ -12,20 +12,20 @@ import org.thehive.hiveserver.websocket.header.AppHeaders;
 import org.thehive.hiveserver.websocket.header.PayloadType;
 import org.thehive.hiveserver.websocket.payload.ChatMessage;
 
-@Slf4j
+@Slf4j(topic = "session")
 @Controller
 @RequiredArgsConstructor
 public class SessionWebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
 
-    @MessageMapping("/session/chatMessage/{id}")
+    @MessageMapping("/session/chat/{id}")
     public void chat(@DestinationVariable("id") String id, @Payload ChatMessage chatMessage, Authentication authentication) {
         chatMessage.setFrom(authentication.getName());
         chatMessage.setTimestamp(System.currentTimeMillis());
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.CHAT_MESSAGE);
-        log.info("ChatMessage - payload: {}, headers: {}", chatMessage, headers);
+        log.info("ChatMessage payload: {}, headers: {}", chatMessage, headers);
         messagingTemplate.convertAndSend("/topic/session/" + id, chatMessage, headers);
     }
 

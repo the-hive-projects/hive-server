@@ -75,8 +75,12 @@ public class WebSocketEventListener {
         log.info("Session unsubscription, sessionId: {}, username: {}", sessionId, securityUser.getUsername());
         sendLeaveNotificationMessage(destination, securityUser.getUsername());
         var liveSession = sessionManager.getSession(sessionId);
-        if (liveSession.session.getCreatedBy().getUsername().equals(securityUser.getUsername()))
+        if (liveSession.session.getCreatedBy().getUsername().equals(securityUser.getUsername())) {
+            // TODO remove if statement in production
+            if (!liveSession.session.getId().equals("00000000000"))
+                sessionManager.terminateSession(liveSession.session.getId());
             sendTerminationNotificationMessage(destination);
+        }
     }
 
     private void sendJoinNotificationMessage(String destination, String username) {
