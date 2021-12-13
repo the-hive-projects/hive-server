@@ -3,8 +3,12 @@ package org.thehive.hiveserver.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.scheduling.annotation.EnableAsync;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.thehive.hiveserver.session.*;
 
+@EnableScheduling
+@EnableAsync
 @Configuration
 public class SessionConfig {
 
@@ -32,6 +36,11 @@ public class SessionConfig {
     @Bean
     public LiveSessionManager liveSessionManager() {
         return new DefaultLiveSessionManager(liveSessionHolderStrategy(), sessionIdGenerator());
+    }
+
+    @Bean
+    public LiveSessionExpirationHandler liveSessionExpirationHandler() {
+        return new ScheduledLiveSessionExpirationHandler(liveSessionManager());
     }
 
 }
