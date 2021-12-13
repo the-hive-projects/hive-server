@@ -30,7 +30,7 @@ public class HiveServerApplication {
     @Profile("dev")
     public CommandLineRunner startDevDefaultSession(SessionService sessionService, LiveSessionManager liveSessionManager) {
         return args -> {
-            var session = sessionService.findById("00000000000");
+            var session = sessionService.findById(1);
             liveSessionManager.startSession(session);
         };
     }

@@ -1,0 +1,84 @@
+{
+  "properties": [
+    {
+      "name": "server.error.include-method",
+      "type": "java.lang.Boolean",
+      "description": "Description for server.error.include-method."
+    },
+    {
+      "name": "validation.message.source",
+      "type": "java.lang.String",
+      "description": "Description for validation.message.source."
+    },
+    {
+      "name": "validation.message.encoding",
+      "type": "java.lang.String",
+      "description": "Description for validation.message.encoding."
+    },
+    {
+      "name": "validation.message.format.delimiter",
+      "type": "java.lang.String",
+      "description": "Description for validation.message.format.delimiter."
+    },
+    {
+      "name": "validation.message.format.separator",
+      "type": "java.lang.String",
+      "description": "Description for validation.message.format.separator."
+    },
+    {
+      "name": "validation.message.format.prefix",
+      "type": "java.lang.String",
+      "description": "Description for validation.message.format.prefix."
+    },
+    {
+      "name": "validation.message.format.suffix",
+      "type": "java.lang.String",
+      "description": "Description for validation.message.format.suffix."
+    },
+    {
+      "name": "validation.message.uniqueness.username",
+      "type": "java.lang.String",
+      "description": "Description for validation.message.uniqueness.username."
+    },
+    {
+      "name": "validation.message.uniqueness.email",
+      "type": "java.lang.String",
+      "description": "Description for validation.message.uniqueness.email."
+    },
+    {
+      "name": "session.id.length",
+      "type": "java.lang.Integer",
+      "description": "Description for session.id.length."
+    },
+    {
+      "name": "session.id.generator.type",
+      "type": "java.lang.Enum",
+      "description": "Description for session.id.generator.type."
+    },
+    {
+      "name": "session.duration.min",
+      "type": "java.time.Duration",
+      "description": "Description for session.duration.min."
+    },
+    {
+      "name": "session.duration.max",
+      "type": "java.time.Duration",
+      "description": "Description for session.duration.max."
+    },
+    {
+      "name": "session.duration.expiration.checkTimeInterval",
+      "type": "java.time.Duration",
+      "description": "Description for session.duration.expiration.checkTimeInterval."
+    },
+    {
+      "name": "image.generator.random.size",
+      "type": "java.lang.Integer",
+      "description": "Description for image.generator.random.size."
+    },
+    {
+      "name": "image.generator.random.minSquare",
+      "type": "java.lang.Integer",
+      "description": "Description for image.generator.random.minSquare."
+    }
+  ]
+}

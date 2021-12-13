@@ -7,8 +7,8 @@ public interface SessionService {
 
     Session save(Session session);
 
-    Session findById(String id) throws EmptyResultDataAccessException;
+    Session findById(Integer id) throws EmptyResultDataAccessException;
 
-    void deleteById(String id) throws EmptyResultDataAccessException;
+    void deleteById(Integer id) throws EmptyResultDataAccessException;
 
 }

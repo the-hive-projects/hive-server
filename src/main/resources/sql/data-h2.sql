@@ -1,4 +1,4 @@
-INSERT INTO user_infos (id, firstname, lastname, created_at)
+INSERT INTO `user_infos` (`id`, `firstname`, `lastname`, `created_at`)
 VALUES (1, 'firstname', 'lastname', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
        (2, 'Robert', 'BROWN', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
        (3, 'John', 'WILSON', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
@@ -100,7 +100,7 @@ VALUES (1, 'firstname', 'lastname', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP(
        (99, 'Philip', 'REILLY', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
        (100, 'Johnny', 'THOMPSON', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000);
 
-insert into users (id, username, password, email, user_info_id)
+insert into `users` (`id`, `username`, `password`, `email`, `user_info_id`)
 values (1, 'user', '{noop}password', 'user@mail.com', 1),
        (2, 'rburborough1', '{noop}Z6gkSv2bPM', 'mgingle1@hostgator.com', 2),
        (3, 'dstollenbeck2', '{noop}TVBSJh', 'tmcinteer2@slashdot.org', 3),
@@ -202,5 +202,5 @@ values (1, 'user', '{noop}password', 'user@mail.com', 1),
        (99, 'vgoodfield2q', '{noop}qo5oyBhg5', 'ewyss2q@ihg.com', 99),
        (100, 'jmapam2r', '{noop}GczdlPd0d1el', 'shardbattle2r@nih.gov', 100);
 
-INSERT INTO sessions (id, name, user_id, created_at)
-VALUES ('00000000000', 'test-session', 1, SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000)
+INSERT INTO `sessions` (`id`, `name`, `duration`, `user_id`, `created_at`)
+VALUES (1, 'test-session', 3600000, 1, SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000)

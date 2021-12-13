@@ -19,14 +19,14 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public Session findById(@NonNull String id) throws EmptyResultDataAccessException {
+    public Session findById(@NonNull Integer id) throws EmptyResultDataAccessException {
         return sessionRepository.findById(id)
                 .orElseThrow(() -> new EmptyResultDataAccessException
                         (String.format("No class %s entity with id %s exists!", Session.class.getName(), id), 1));
     }
 
     @Override
-    public void deleteById(@NonNull String id) throws EmptyResultDataAccessException {
+    public void deleteById(@NonNull Integer id) throws EmptyResultDataAccessException {
         sessionRepository.deleteById(id);
     }
 

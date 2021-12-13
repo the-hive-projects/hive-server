@@ -76,9 +76,6 @@ public class WebSocketEventListener {
         sendLeaveNotificationMessage(destination, securityUser.getUsername());
         var liveSession = sessionManager.getSession(sessionId);
         if (liveSession.session.getCreatedBy().getUsername().equals(securityUser.getUsername())) {
-            // TODO remove if statement in production
-            if (!liveSession.session.getId().equals("00000000000"))
-                sessionManager.endSession(liveSession.session.getId());
             sendTerminationNotificationMessage(destination);
         }
     }
@@ -107,7 +104,7 @@ public class WebSocketEventListener {
         var liveSession = sessionManager.getSession(extractSessionIdFromDestination(destination));
         var payload = new SessionInformation();
         payload.setOwnerUsername(liveSession.session.getCreatedBy().getUsername());
-        payload.setParticipantUsernameList(liveSession.getCurrentParticipantSet());
+        payload.setParticipantSet(liveSession.getCurrentParticipantSet());
         payload.setTimestamp(System.currentTimeMillis());
         messagingTemplate.convertAndSend(destination, payload, headers);
     }

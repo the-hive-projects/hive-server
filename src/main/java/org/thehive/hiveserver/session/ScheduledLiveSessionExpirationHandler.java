@@ -12,15 +12,20 @@ public class ScheduledLiveSessionExpirationHandler implements LiveSessionExpirat
     private final LiveSessionManager liveSessionManager;
 
     @Async
-    @Scheduled
+    @Scheduled(fixedDelayString = "${session.duration.expiration.checkTimeInterval}")
     @Override
     public void checkForExpiration() {
-        var sessions = liveSessionManager.allSessions();
+        var currentTimeMs = System.currentTimeMillis();
+        var liveSessions = liveSessionManager.allSessions();
+        liveSessions.parallelStream()
+                .filter(liveSession -> liveSession.session.getDuration() <= currentTimeMs - liveSession.session.getCreatedAt())
+                .forEach(this::expireSession);
     }
 
     @Override
     public void expireSession(LiveSession liveSession) {
-
+        log.info("LiveSession has been expired, joinId: {}", liveSession.joinId);
+        liveSessionManager.endSession(liveSession.joinId);
     }
 
 }

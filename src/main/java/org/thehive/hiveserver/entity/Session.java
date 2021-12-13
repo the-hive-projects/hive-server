@@ -24,7 +24,7 @@ public class Session {
 
     private String name;
 
-    private long duration;
+    private Long duration;
 
     @CreatedBy
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})

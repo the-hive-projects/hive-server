@@ -29,17 +29,14 @@ spring:
       settings:
         trace: false
         web-allow-others: false
-
 logging:
   level:
     root: info
-
 management:
   endpoints:
     web:
       exposure:
         include: '*'
-
 validation:
   message:
     source: classpath:messages
@@ -52,7 +49,6 @@ validation:
     uniqueness:
       username: "Username '{}' is already taken"
       email: "Email '{}' is already taken"
-
 session:
   id:
     length: 11
@@ -62,8 +58,7 @@ session:
     min: 20m
     max: 90m
     expiration:
-      checkTimeInterval: 1s
-
+      checkTimeInterval: 1000
 image:
   generator:
     random:
