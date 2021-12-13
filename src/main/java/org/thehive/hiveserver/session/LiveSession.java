@@ -4,45 +4,44 @@ import lombok.NonNull;
 import org.thehive.hiveserver.entity.Session;
 
 import java.util.Collections;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 public class LiveSession {
 
     public final Session session;
-    private final List<String> allParticipantUsernameList;
-    private final List<String> currentParticipantUsernameList;
+    private final Set<String> allParticipantSet;
+    private final Set<String> currentParticipantSet;
 
     LiveSession(@NonNull Session session) {
         this.session = session;
-        //TODO better collection implementation
-        this.allParticipantUsernameList = Collections.synchronizedList(new LinkedList<>());
-        this.currentParticipantUsernameList = Collections.synchronizedList(new LinkedList<>());
+        this.allParticipantSet = new ConcurrentSkipListSet<>();
+        this.currentParticipantSet = new ConcurrentSkipListSet<>();
     }
 
     public void addParticipant(String username) {
-        allParticipantUsernameList.add(username);
-        currentParticipantUsernameList.add(username);
+        allParticipantSet.add(username);
+        currentParticipantSet.add(username);
     }
 
     public void removeParticipant(String username) {
-        currentParticipantUsernameList.remove(username);
+        currentParticipantSet.remove(username);
     }
 
-    public List<String> getAllParticipantUsernameList() {
-        return Collections.unmodifiableList(allParticipantUsernameList);
+    public Set<String> getAllParticipantSet() {
+        return Collections.unmodifiableSet(allParticipantSet);
     }
 
-    public List<String> getCurrentParticipantUsernameList() {
-        return Collections.unmodifiableList(currentParticipantUsernameList);
+    public Set<String> getCurrentParticipantSet() {
+        return Collections.unmodifiableSet(currentParticipantSet);
     }
 
     public int allParticipantCount() {
-        return allParticipantUsernameList.size();
+        return allParticipantSet.size();
     }
 
     public int currentParticipantCount() {
-        return currentParticipantUsernameList.size();
+        return currentParticipantSet.size();
     }
 
 }

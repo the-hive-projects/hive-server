@@ -25,8 +25,13 @@ public class SessionConfig {
     }
 
     @Bean
+    public LiveSessionHolderStrategy liveSessionHolderStrategy() {
+        return new InMemoryLiveSessionHolderStrategy();
+    }
+
+    @Bean
     public LiveSessionManager liveSessionManager() {
-        return new LiveSessionManagerImpl();
+        return new DefaultLiveSessionManager(liveSessionHolderStrategy());
     }
 
 }

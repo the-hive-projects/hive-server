@@ -4,13 +4,15 @@ import org.thehive.hiveserver.entity.Session;
 
 public interface LiveSessionManager {
 
-    LiveSession startSession(Session session);
+    LiveSessionHolderStrategy getStrategy();
+
+    LiveSession makeSessionLive(Session session);
+
+    LiveSession getSession(String sessionId);
 
     LiveSession terminateSession(String sessionId);
 
     boolean containsSession(String sessionId);
-
-    LiveSession getSession(String sessionId);
 
     int sessionCount();
 
