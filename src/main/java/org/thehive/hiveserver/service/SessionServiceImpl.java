@@ -6,7 +6,6 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.thehive.hiveserver.entity.Session;
 import org.thehive.hiveserver.repository.SessionRepository;
-import org.thehive.hiveserver.session.SessionJoinIdGenerator;
 
 @RequiredArgsConstructor
 @Service

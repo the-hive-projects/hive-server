@@ -15,7 +15,7 @@ public class ScheduledLiveSessionExpirationHandler implements LiveSessionExpirat
     @Scheduled
     @Override
     public void checkForExpiration() {
-        var sessions=liveSessionManager.allSessions();
+        var sessions = liveSessionManager.allSessions();
     }
 
     @Override

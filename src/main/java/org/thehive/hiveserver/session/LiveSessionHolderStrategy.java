@@ -1,11 +1,10 @@
 package org.thehive.hiveserver.session;
 
 import java.util.Collection;
-import java.util.Set;
 
 public interface LiveSessionHolderStrategy {
 
-    void add(String id,LiveSession session);
+    void add(String id, LiveSession session);
 
     LiveSession get(String id);
 
