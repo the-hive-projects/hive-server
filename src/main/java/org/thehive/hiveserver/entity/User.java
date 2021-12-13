@@ -44,7 +44,7 @@ public class User {
     @Valid
     @NotNull(message = "{user.userinfo}")
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     @JoinColumn(name = "user_info_id", nullable = false)
     private UserInfo userInfo;
 

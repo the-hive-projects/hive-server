@@ -1,5 +1,6 @@
 package org.thehive.hiveserver.session;
 
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
 import org.thehive.hiveserver.entity.Session;
 
@@ -7,6 +8,7 @@ import java.util.Collections;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
+@EqualsAndHashCode
 public class LiveSession {
 
     public final String joinId;

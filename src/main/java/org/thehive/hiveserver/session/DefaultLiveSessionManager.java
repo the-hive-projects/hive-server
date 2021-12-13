@@ -38,8 +38,13 @@ public class DefaultLiveSessionManager extends AbstractLiveSessionManager {
     }
 
     @Override
+    public Collection<String> allIds() {
+        return strategy.ids();
+    }
+
+    @Override
     public Collection<LiveSession> allSessions() {
-        return strategy.all();
+        return strategy.sessions();
     }
 
     @Override

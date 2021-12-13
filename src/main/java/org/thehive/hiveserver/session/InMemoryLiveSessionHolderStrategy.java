@@ -28,7 +28,12 @@ public class InMemoryLiveSessionHolderStrategy implements LiveSessionHolderStrat
     }
 
     @Override
-    public Collection<LiveSession> all() {
+    public Collection<String> ids() {
+        return idLiveSessionMap.keySet();
+    }
+
+    @Override
+    public Collection<LiveSession> sessions() {
         return Collections.unmodifiableCollection(idLiveSessionMap.values());
     }
 

@@ -21,6 +21,9 @@ public class HiveServerApplication {
     // TODO: 12/8/2021 remove dev profiled beans and session controls
     // TODO: 12/8/2021 check for not joined but started sessions
     // TODO: 12/8/2021 control subscriptions when directly disconnect in client or desktop
+    // TODO: 12/14/2021 adds cache
+    // TODO: 12/14/2021 adds session management
+    // TODO: 12/14/2021 manage hiberante eager fetch type
 
     public static void main(String[] args) {
         SpringApplication.run(HiveServerApplication.class, args);

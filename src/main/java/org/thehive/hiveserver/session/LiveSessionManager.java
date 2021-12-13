@@ -14,6 +14,8 @@ public interface LiveSessionManager {
 
     LiveSession getSession(String joinId);
 
+    Collection<String> allIds();
+
     Collection<LiveSession> allSessions();
 
     boolean containsSession(String joinId);

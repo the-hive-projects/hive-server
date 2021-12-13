@@ -8,7 +8,9 @@ public interface LiveSessionHolderStrategy {
 
     LiveSession get(String id);
 
-    Collection<LiveSession> all();
+    Collection<String> ids();
+
+    Collection<LiveSession> sessions();
 
     LiveSession remove(String id);
 
