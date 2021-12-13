@@ -4,6 +4,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.thehive.hiveserver.entity.Session;
 
+import java.util.Collection;
+
 public class DefaultLiveSessionManager extends AbstractLiveSessionManager {
 
     private final SessionJoinIdGenerator joinIdGenerator;
@@ -14,30 +16,35 @@ public class DefaultLiveSessionManager extends AbstractLiveSessionManager {
     }
 
     @Override
-    public LiveSession makeSessionLive(Session session) {
+    public LiveSession startSession(Session session) {
         String joinId;
         do {
             joinId = joinIdGenerator.generate();
         } while (containsSession(joinId));
-        var liveSession = new LiveSession(joinId,session);
+        var liveSession = new LiveSession(joinId, session);
         strategy.add(joinId, liveSession);
         return liveSession;
     }
 
     @Nullable
     @Override
-    public LiveSession terminateSession(String joinId) {
+    public LiveSession endSession(String joinId) {
         return strategy.get(joinId);
-    }
-
-    @Override
-    public boolean containsSession(String joinId) {
-        return strategy.contains(joinId);
     }
 
     @Override
     public LiveSession getSession(String joinId) {
         return strategy.get(joinId);
+    }
+
+    @Override
+    public Collection<LiveSession> allSessions() {
+        return strategy.all();
+    }
+
+    @Override
+    public boolean containsSession(String joinId) {
+        return strategy.contains(joinId);
     }
 
     @Override

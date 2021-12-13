@@ -17,6 +17,7 @@ import javax.validation.constraints.Min;
 public class SessionProperties {
 
     private Id id;
+    private Duration duration;
 
     @Getter
     @Setter
@@ -43,5 +44,28 @@ public class SessionProperties {
         }
 
     }
+
+    @Getter
+    @Setter
+    @AllArgsConstructor
+    @NoArgsConstructor
+    public static class Duration {
+
+        private java.time.Duration min;
+        private java.time.Duration max;
+        private Expiration expiration;
+
+        @Getter
+        @Setter
+        @AllArgsConstructor
+        @NoArgsConstructor
+        public static class Expiration {
+
+            private java.time.Duration checkTime;
+
+        }
+
+    }
+
 
 }

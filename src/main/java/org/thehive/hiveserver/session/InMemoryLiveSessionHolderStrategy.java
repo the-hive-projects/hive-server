@@ -3,6 +3,8 @@ package org.thehive.hiveserver.session;
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -23,6 +25,11 @@ public class InMemoryLiveSessionHolderStrategy implements LiveSessionHolderStrat
     @Override
     public LiveSession get(@NonNull String id) {
         return idLiveSessionMap.get(id);
+    }
+
+    @Override
+    public Collection<LiveSession> all() {
+        return Collections.unmodifiableCollection(idLiveSessionMap.values());
     }
 
     @Nullable

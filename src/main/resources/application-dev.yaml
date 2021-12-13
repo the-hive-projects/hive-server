@@ -58,6 +58,11 @@ session:
     length: 11
     generator:
       type: NUMERICAL
+  duration:
+    min: 20m
+    max: 90m
+    expiration:
+      checkTimeInterval: 1s
 
 image:
   generator:

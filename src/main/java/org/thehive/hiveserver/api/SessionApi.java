@@ -31,7 +31,7 @@ public class SessionApi {
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
     public Session save(@RequestBody Session session) {
         var savedSession = sessionService.save(session);
-        liveSessionManager.makeSessionLive(savedSession);
+        liveSessionManager.startSession(savedSession);
         return savedSession;
     }
 

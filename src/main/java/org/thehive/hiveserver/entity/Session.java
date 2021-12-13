@@ -24,6 +24,8 @@ public class Session {
 
     private String name;
 
+    private long duration;
+
     @CreatedBy
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.EAGER)
