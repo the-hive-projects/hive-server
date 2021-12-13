@@ -2,7 +2,7 @@ package org.thehive.hiveserver.session;
 
 public interface LiveSessionHolderStrategy {
 
-    void add(LiveSession session);
+    void add(String id,LiveSession session);
 
     LiveSession get(String id);
 

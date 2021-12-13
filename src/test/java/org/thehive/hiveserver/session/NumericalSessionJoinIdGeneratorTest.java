@@ -9,11 +9,11 @@ import java.nio.charset.StandardCharsets;
 import java.util.stream.IntStream;
 
 @Slf4j
-class NumericalSessionIdGeneratorTest {
+class NumericalSessionJoinIdGeneratorTest {
 
     static final int LENGHT = 11;
 
-    NumericalSessionIdGenerator idGenerator = new NumericalSessionIdGenerator(LENGHT);
+    NumericalSessionJoinIdGenerator idGenerator = new NumericalSessionJoinIdGenerator(LENGHT);
 
     @DisplayName("Generate ids and check byte range")
     @Test

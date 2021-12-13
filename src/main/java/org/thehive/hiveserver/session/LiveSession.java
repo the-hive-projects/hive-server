@@ -9,11 +9,13 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 public class LiveSession {
 
+    public final String joinId;
     public final Session session;
     private final Set<String> allParticipantSet;
     private final Set<String> currentParticipantSet;
 
-    LiveSession(@NonNull Session session) {
+    LiveSession(@NonNull String joinId, @NonNull Session session) {
+        this.joinId = joinId;
         this.session = session;
         this.allParticipantSet = new ConcurrentSkipListSet<>();
         this.currentParticipantSet = new ConcurrentSkipListSet<>();

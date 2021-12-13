@@ -15,10 +15,10 @@ public class SessionConfig {
     }
 
     @Bean
-    public SessionIdGenerator sessionIdGenerator() {
+    public SessionJoinIdGenerator sessionIdGenerator() {
         var sessionProperties = sessionProperties();
         if (sessionProperties.getId().getGenerator().getType() == SessionProperties.Id.Generator.Types.NUMERICAL) {
-            return new NumericalSessionIdGenerator(sessionProperties.getId().getLength());
+            return new NumericalSessionJoinIdGenerator(sessionProperties.getId().getLength());
         }
         throw new IllegalStateException("Session type is not supported, sessionType: " +
                 sessionProperties.getId().getGenerator().getType());
@@ -31,7 +31,7 @@ public class SessionConfig {
 
     @Bean
     public LiveSessionManager liveSessionManager() {
-        return new DefaultLiveSessionManager(liveSessionHolderStrategy());
+        return new DefaultLiveSessionManager(liveSessionHolderStrategy(), sessionIdGenerator());
     }
 
 }

@@ -8,11 +8,11 @@ public interface LiveSessionManager {
 
     LiveSession makeSessionLive(Session session);
 
-    LiveSession getSession(String sessionId);
+    LiveSession getSession(String joinId);
 
-    LiveSession terminateSession(String sessionId);
+    LiveSession terminateSession(String joinId);
 
-    boolean containsSession(String sessionId);
+    boolean containsSession(String joinId);
 
     int sessionCount();
 

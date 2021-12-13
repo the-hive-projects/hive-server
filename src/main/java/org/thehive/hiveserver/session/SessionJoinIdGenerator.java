@@ -1,6 +1,6 @@
 package org.thehive.hiveserver.session;
 
-public interface SessionIdGenerator {
+public interface SessionJoinIdGenerator {
 
     String generate();
 

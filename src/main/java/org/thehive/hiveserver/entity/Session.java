@@ -19,7 +19,8 @@ import javax.persistence.*;
 public class Session {
 
     @Id
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
 
     private String name;
 

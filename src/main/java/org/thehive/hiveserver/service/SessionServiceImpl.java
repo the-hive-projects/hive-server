@@ -6,18 +6,17 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.thehive.hiveserver.entity.Session;
 import org.thehive.hiveserver.repository.SessionRepository;
-import org.thehive.hiveserver.session.SessionIdGenerator;
+import org.thehive.hiveserver.session.SessionJoinIdGenerator;
 
 @RequiredArgsConstructor
 @Service
 public class SessionServiceImpl implements SessionService {
 
     private final SessionRepository sessionRepository;
-    private final SessionIdGenerator sessionIdGenerator;
 
     @Override
     public Session save(@NonNull Session session) {
-        return sessionRepository.save(session.withId(sessionIdGenerator.generate()));
+        return sessionRepository.save(session.withId(null));
     }
 
     @Override

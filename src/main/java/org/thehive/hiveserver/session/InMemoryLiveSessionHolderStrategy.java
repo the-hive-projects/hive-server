@@ -15,8 +15,8 @@ public class InMemoryLiveSessionHolderStrategy implements LiveSessionHolderStrat
     }
 
     @Override
-    public void add(@NonNull LiveSession session) {
-        idLiveSessionMap.put(session.session.getId(), session);
+    public void add(@NonNull String id, @NonNull LiveSession session) {
+        idLiveSessionMap.put(id, session);
     }
 
     @Nullable
