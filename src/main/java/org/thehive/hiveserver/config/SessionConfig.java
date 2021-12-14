@@ -3,9 +3,13 @@ package org.thehive.hiveserver.config;
 import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import org.thehive.hiveserver.session.*;
+import org.thehive.hiveserver.session.NumericalSessionJoinIdGenerator;
+import org.thehive.hiveserver.session.SessionJoinIdGenerator;
+import org.thehive.hiveserver.session.SessionProperties;
+import org.thehive.hiveserver.session.live.*;
 
 @EnableScheduling
 @EnableAsync
@@ -41,6 +45,11 @@ public class SessionConfig {
     @Bean
     public LiveSessionExpirationHandler liveSessionExpirationHandler() {
         return new ScheduledLiveSessionExpirationHandler(liveSessionHolder());
+    }
+
+    @Bean
+    public LiveSessionMessagingService liveSessionMessagingService(SimpMessagingTemplate messagingTemplate) {
+        return new LiveSessionMessagingServiceImpl(messagingTemplate);
     }
 
 }

@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.thehive.hiveserver.service.SessionService;
-import org.thehive.hiveserver.session.LiveSessionHolder;
+import org.thehive.hiveserver.session.live.LiveSessionHolder;
 
 @SpringBootApplication(proxyBeanMethods = false)
 public class HiveServerApplication {

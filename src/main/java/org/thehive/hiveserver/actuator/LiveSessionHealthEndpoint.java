@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.boot.actuate.endpoint.annotation.Endpoint;
 import org.springframework.boot.actuate.endpoint.annotation.ReadOperation;
 import org.springframework.stereotype.Component;
-import org.thehive.hiveserver.session.LiveSessionHolderStrategy;
+import org.thehive.hiveserver.session.live.LiveSessionHolderStrategy;
 
 @Component
 @RequiredArgsConstructor

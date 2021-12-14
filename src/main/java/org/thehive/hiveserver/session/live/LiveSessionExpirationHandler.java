@@ -1,4 +1,4 @@
-package org.thehive.hiveserver.session;
+package org.thehive.hiveserver.session.live;
 
 public interface LiveSessionExpirationHandler {
 

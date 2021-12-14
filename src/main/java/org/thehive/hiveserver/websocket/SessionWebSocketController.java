@@ -5,9 +5,10 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.handler.annotation.DestinationVariable;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
+import org.thehive.hiveserver.session.live.LiveSessionHolder;
+import org.thehive.hiveserver.session.live.LiveSessionMessagingService;
 import org.thehive.hiveserver.websocket.header.AppHeaders;
 import org.thehive.hiveserver.websocket.header.PayloadType;
 import org.thehive.hiveserver.websocket.payload.ChatMessage;
@@ -17,21 +18,18 @@ import org.thehive.hiveserver.websocket.payload.ChatMessage;
 @RequiredArgsConstructor
 public class SessionWebSocketController {
 
-    private final SimpMessagingTemplate messagingTemplate;
+    private final LiveSessionHolder liveSessionHolder;
+    private final LiveSessionMessagingService messagingService;
 
-    @MessageMapping("/session/chat/{id}")
-    public void chat(@DestinationVariable("id") String id, @Payload ChatMessage chatMessage, Authentication authentication) {
+    @MessageMapping("/session/chat/{live-id}")
+    public void chat(@DestinationVariable("live-id") String liveId, @Payload ChatMessage chatMessage, Authentication authentication) {
         chatMessage.setFrom(authentication.getName());
         chatMessage.setTimestamp(System.currentTimeMillis());
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.CHAT_MESSAGE);
         log.info("ChatMessage payload: {}, headers: {}", chatMessage, headers);
-        messagingTemplate.convertAndSend("/topic/session/" + id, chatMessage, headers);
-    }
-
-    @MessageMapping("/test/{name}")
-    public void test(@DestinationVariable("name") String name, @Payload String message) {
-        messagingTemplate.convertAndSendToUser(name, "/queue/test", message);
+        var liveSession = liveSessionHolder.getSession(liveId);
+        messagingService.sendChatMessage(liveSession, chatMessage);
     }
 
 }

@@ -1,8 +1,9 @@
-package org.thehive.hiveserver.session;
+package org.thehive.hiveserver.session.live;
 
 import org.springframework.lang.NonNull;
 import org.springframework.lang.Nullable;
 import org.thehive.hiveserver.entity.Session;
+import org.thehive.hiveserver.session.SessionJoinIdGenerator;
 
 import java.util.Collection;
 

@@ -1,4 +1,4 @@
-package org.thehive.hiveserver.session;
+package org.thehive.hiveserver.session.live;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
@@ -15,7 +15,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
     private final SimpMessagingTemplate messagingTemplate;
 
     @Override
-    public void sendLiveSessionInformationMessage(LiveSession liveSession, String participant) {
+    public void sendLiveSessionInformation(LiveSession liveSession, String participant) {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.LIVE_SESSION_INFORMATION);
         var payload = new LiveSessionInformation();
@@ -27,7 +27,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
     }
 
     @Override
-    public void sendParticipationNotificationMessage(LiveSession liveSession, String participant, boolean joined) {
+    public void sendParticipationNotification(LiveSession liveSession, String participant, boolean joined) {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.PARTICIPATION_NOTIFICATION);
         var payload = new ParticipationNotification();
@@ -41,7 +41,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
     }
 
     @Override
-    public void onLiveSessionWasExpired(LiveSession liveSession) {
+    public void sendExpirationNotification(LiveSession liveSession) {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.EXPIRATION_NOTIFICATION);
         var payload = new ExpirationNotification();
@@ -52,7 +52,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
     }
 
     @Override
-    public void onUserSentChatMessage(LiveSession liveSession, ChatMessage chatMessage) {
+    public void sendChatMessage(LiveSession liveSession, ChatMessage chatMessage) {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.CHAT_MESSAGE);
         liveSession.getCurrentParticipantSet()

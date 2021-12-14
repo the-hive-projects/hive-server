@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.thehive.hiveserver.entity.Session;
 import org.thehive.hiveserver.service.SessionService;
-import org.thehive.hiveserver.session.LiveSessionHolder;
+import org.thehive.hiveserver.session.live.LiveSessionHolder;
 
 @RequiredArgsConstructor
 @RestController

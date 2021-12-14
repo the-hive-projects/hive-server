@@ -1,4 +1,4 @@
-package org.thehive.hiveserver.session;
+package org.thehive.hiveserver.session.live;
 
 import lombok.EqualsAndHashCode;
 import lombok.NonNull;

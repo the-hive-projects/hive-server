@@ -1,4 +1,4 @@
-package org.thehive.hiveserver.session;
+package org.thehive.hiveserver.session.live;
 
 import org.springframework.lang.NonNull;
 

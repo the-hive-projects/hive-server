@@ -1,4 +1,4 @@
-package org.thehive.hiveserver.session;
+package org.thehive.hiveserver.session.live;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
