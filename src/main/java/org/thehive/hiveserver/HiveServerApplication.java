@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Profile;
 import org.thehive.hiveserver.service.SessionService;
-import org.thehive.hiveserver.session.LiveSessionManager;
+import org.thehive.hiveserver.session.LiveSessionHolder;
 
 @SpringBootApplication(proxyBeanMethods = false)
 public class HiveServerApplication {
@@ -31,10 +31,10 @@ public class HiveServerApplication {
 
     @Bean
     @Profile("dev")
-    public CommandLineRunner startDevDefaultSession(SessionService sessionService, LiveSessionManager liveSessionManager) {
+    public CommandLineRunner startDevDefaultSession(SessionService sessionService, LiveSessionHolder liveSessionHolder) {
         return args -> {
             var session = sessionService.findById(1);
-            liveSessionManager.startSession(session);
+            liveSessionHolder.startSession(session);
         };
     }
 

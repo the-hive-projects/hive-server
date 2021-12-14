@@ -6,11 +6,11 @@ import org.thehive.hiveserver.entity.Session;
 
 import java.util.Collection;
 
-public class DefaultLiveSessionManager extends AbstractLiveSessionManager {
+public class DefaultLiveSessionHolder extends AbstractLiveSessionHolder {
 
     private final SessionJoinIdGenerator joinIdGenerator;
 
-    public DefaultLiveSessionManager(LiveSessionHolderStrategy strategy, @NonNull SessionJoinIdGenerator joinIdGenerator) {
+    public DefaultLiveSessionHolder(LiveSessionHolderStrategy strategy, @NonNull SessionJoinIdGenerator joinIdGenerator) {
         super(strategy);
         this.joinIdGenerator = joinIdGenerator;
     }
@@ -20,7 +20,7 @@ public class DefaultLiveSessionManager extends AbstractLiveSessionManager {
         String joinId;
         do {
             joinId = joinIdGenerator.generate();
-        } while (containsSession(joinId));
+        } while (contains(joinId));
         var liveSession = new LiveSession(joinId, session);
         strategy.add(joinId, liveSession);
         return liveSession;
@@ -29,7 +29,7 @@ public class DefaultLiveSessionManager extends AbstractLiveSessionManager {
     @Nullable
     @Override
     public LiveSession endSession(String joinId) {
-        return strategy.get(joinId);
+        return strategy.remove(joinId);
     }
 
     @Override
@@ -48,12 +48,12 @@ public class DefaultLiveSessionManager extends AbstractLiveSessionManager {
     }
 
     @Override
-    public boolean containsSession(String joinId) {
+    public boolean contains(String joinId) {
         return strategy.contains(joinId);
     }
 
     @Override
-    public int sessionCount() {
+    public int count() {
         return strategy.count();
     }
 

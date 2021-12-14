@@ -4,9 +4,9 @@ import org.thehive.hiveserver.entity.Session;
 
 import java.util.Collection;
 
-public interface LiveSessionManager {
+public interface LiveSessionHolder {
 
-    LiveSessionHolderStrategy getStrategy();
+    LiveSessionHolderStrategy getSessionHolderStrategy();
 
     LiveSession startSession(Session session);
 
@@ -18,8 +18,8 @@ public interface LiveSessionManager {
 
     Collection<LiveSession> allSessions();
 
-    boolean containsSession(String joinId);
+    boolean contains(String joinId);
 
-    int sessionCount();
+    int count();
 
 }

@@ -34,13 +34,13 @@ public class SessionConfig {
     }
 
     @Bean
-    public LiveSessionManager liveSessionManager() {
-        return new DefaultLiveSessionManager(liveSessionHolderStrategy(), sessionIdGenerator());
+    public LiveSessionHolder liveSessionHolder() {
+        return new DefaultLiveSessionHolder(liveSessionHolderStrategy(), sessionIdGenerator());
     }
 
     @Bean
     public LiveSessionExpirationHandler liveSessionExpirationHandler() {
-        return new ScheduledLiveSessionExpirationHandler(liveSessionManager());
+        return new ScheduledLiveSessionExpirationHandler(liveSessionHolder());
     }
 
 }

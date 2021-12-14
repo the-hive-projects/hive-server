@@ -1,15 +1,14 @@
 package org.thehive.hiveserver;
 
 import lombok.NonNull;
+import lombok.SneakyThrows;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.HttpHeaders;
-import org.springframework.messaging.simp.stomp.StompCommand;
-import org.springframework.messaging.simp.stomp.StompHeaders;
-import org.springframework.messaging.simp.stomp.StompSession;
-import org.springframework.messaging.simp.stomp.StompSessionHandlerAdapter;
+import org.springframework.messaging.simp.stomp.*;
 import org.springframework.web.socket.WebSocketHttpHeaders;
 import org.springframework.web.socket.client.standard.StandardWebSocketClient;
 import org.springframework.web.socket.messaging.WebSocketStompClient;
+import org.thehive.hiveserver.websocket.payload.ChatMessage;
 
 import java.lang.reflect.Type;
 import java.util.Base64;
@@ -47,10 +46,30 @@ class Connect {
                 System.out.println("Connect.handleFrame");
             }
 
+            @SneakyThrows
             @Override
             public void afterConnected(StompSession session, StompHeaders connectedHeaders) {
                 super.afterConnected(session, connectedHeaders);
                 System.out.println("Connect.afterConnected");
+                session.subscribe("/queue/test", new StompFrameHandler() {
+                    @Override
+                    public Type getPayloadType(StompHeaders headers) {
+                        System.out.println("Connect.getPayloadType");
+                        return String.class;
+                    }
+
+                    @Override
+                    public void handleFrame(StompHeaders headers, Object payload) {
+                        System.out.println("Connect.handleFrame");
+                    }
+                });
+
+                Thread.sleep(2000L);
+
+                var text = new ChatMessage();
+                text.setText("asd");
+                session.send("/queue/test/user", text);
+
             }
 
             @Override

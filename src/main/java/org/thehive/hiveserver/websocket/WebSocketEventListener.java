@@ -9,7 +9,7 @@ import org.springframework.web.socket.messaging.SessionConnectEvent;
 import org.springframework.web.socket.messaging.SessionDisconnectEvent;
 import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
-import org.thehive.hiveserver.session.LiveSessionManager;
+import org.thehive.hiveserver.session.LiveSessionHolder;
 import org.thehive.hiveserver.websocket.header.AppHeaders;
 import org.thehive.hiveserver.websocket.header.PayloadType;
 import org.thehive.hiveserver.websocket.payload.JoinNotification;
@@ -22,10 +22,10 @@ import org.thehive.hiveserver.websocket.payload.TerminationNotification;
 @Slf4j(topic = "session")
 public class WebSocketEventListener {
 
-    private static final String SESSION_TOPIC_DESTINATION = "/topic/session";
+    private static final String SESSION_TOPIC_DESTINATION = "/queue/session";
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final LiveSessionManager sessionManager;
+    private final LiveSessionHolder sessionManager;
 
     @EventListener
     public void handleConnection(SessionConnectEvent event) {
@@ -42,14 +42,14 @@ public class WebSocketEventListener {
     @EventListener
     public void handleSubscription(SessionSubscribeEvent event) {
         var destination = WebSocketUtils.extractDestination(event);
-        if (isSessionTopicDestination(destination))
+        if (isSessionDestination(destination))
             handleSessionSubscription(event, destination);
     }
 
     @EventListener
     public void handleUnsubscription(SessionUnsubscribeEvent event) {
         var destination = WebSocketUtils.extractDestination(event);
-        if (isSessionTopicDestination(destination))
+        if (isSessionDestination(destination))
             handleSessionUnsubscription(event, destination);
     }
 
@@ -57,7 +57,7 @@ public class WebSocketEventListener {
         return destination.substring(SESSION_TOPIC_DESTINATION.length() + 1);
     }
 
-    private boolean isSessionTopicDestination(String destination) {
+    private boolean isSessionDestination(String destination) {
         return destination.startsWith(SESSION_TOPIC_DESTINATION);
     }
 

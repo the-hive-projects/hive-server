@@ -29,4 +29,9 @@ public class SessionWebSocketController {
         messagingTemplate.convertAndSend("/topic/session/" + id, chatMessage, headers);
     }
 
+    @MessageMapping("/test/{name}")
+    public void test(@DestinationVariable("name") String name, @Payload String message) {
+        messagingTemplate.convertAndSendToUser(name, "/queue/test", message);
+    }
+
 }
