@@ -12,10 +12,8 @@ import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 import org.thehive.hiveserver.session.LiveSessionHolder;
 import org.thehive.hiveserver.websocket.header.AppHeaders;
 import org.thehive.hiveserver.websocket.header.PayloadType;
-import org.thehive.hiveserver.websocket.payload.JoinNotification;
-import org.thehive.hiveserver.websocket.payload.LeaveNotification;
-import org.thehive.hiveserver.websocket.payload.SessionInformation;
-import org.thehive.hiveserver.websocket.payload.TerminationNotification;
+import org.thehive.hiveserver.websocket.payload.LiveSessionInformation;
+import org.thehive.hiveserver.websocket.payload.ExpirationNotification;
 
 @Component
 @RequiredArgsConstructor
@@ -100,9 +98,9 @@ public class WebSocketEventListener {
 
     private void sendSessionInfoMessage(String destination) {
         var headers = new AppHeaders();
-        headers.setPayloadType(PayloadType.SESSION_INFORMATION);
+        headers.setPayloadType(PayloadType.LIVE_SESSION_INFORMATION);
         var liveSession = sessionManager.getSession(extractSessionIdFromDestination(destination));
-        var payload = new SessionInformation();
+        var payload = new LiveSessionInformation();
         payload.setOwnerUsername(liveSession.session.getCreatedBy().getUsername());
         payload.setParticipantSet(liveSession.getCurrentParticipantSet());
         payload.setTimestamp(System.currentTimeMillis());
@@ -112,7 +110,7 @@ public class WebSocketEventListener {
     private void sendTerminationNotificationMessage(String destination) {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.TERMINATION_NOTIFICATION);
-        var payload = new TerminationNotification();
+        var payload = new ExpirationNotification();
         payload.setTimestamp(System.currentTimeMillis());
         messagingTemplate.convertAndSend(destination, payload, headers);
     }

@@ -16,7 +16,7 @@ public class DefaultLiveSessionHolder extends AbstractLiveSessionHolder {
     }
 
     @Override
-    public LiveSession startSession(Session session) {
+    public LiveSession addSession(Session session) {
         String joinId;
         do {
             joinId = joinIdGenerator.generate();
@@ -28,13 +28,13 @@ public class DefaultLiveSessionHolder extends AbstractLiveSessionHolder {
 
     @Nullable
     @Override
-    public LiveSession endSession(String joinId) {
-        return strategy.remove(joinId);
+    public LiveSession removeSession(String liveId) {
+        return strategy.remove(liveId);
     }
 
     @Override
-    public LiveSession getSession(String joinId) {
-        return strategy.get(joinId);
+    public LiveSession getSession(String liveId) {
+        return strategy.get(liveId);
     }
 
     @Override
@@ -48,8 +48,8 @@ public class DefaultLiveSessionHolder extends AbstractLiveSessionHolder {
     }
 
     @Override
-    public boolean contains(String joinId) {
-        return strategy.contains(joinId);
+    public boolean contains(String liveId) {
+        return strategy.contains(liveId);
     }
 
     @Override

@@ -33,8 +33,8 @@ public class SessionApi {
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
     public Session save(@RequestBody Session session) {
         var savedSession = sessionService.save(session);
-        var liveSession = liveSessionHolder.startSession(savedSession);
-        log.info("Live Session has been started, joinId: {}, session: {}", liveSession.joinId, liveSession.session);
+        var liveSession = liveSessionHolder.addSession(savedSession);
+        log.info("Live Session has been started, joinId: {}, session: {}", liveSession.liveId, liveSession.session);
         return savedSession;
     }
 

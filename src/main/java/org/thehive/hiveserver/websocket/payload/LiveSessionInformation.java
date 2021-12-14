@@ -9,10 +9,11 @@ import java.util.Set;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class SessionInformation implements Payload {
+public class LiveSessionInformation implements Payload {
 
-    private String ownerUsername;
-    private Set<String> participantSet;
-    private long timestamp;
+    private String owner;
+    private Set<String> participants;
+    private long duration;
+    private long createdAt;
 
 }

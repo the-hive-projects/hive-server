@@ -2,11 +2,10 @@ package org.thehive.hiveserver.websocket.header;
 
 public enum PayloadType {
 
-    JOIN_NOTIFICATION("join-notification"),
-    LEAVE_NOTIFICATION("leave-notification"),
-    CHAT_MESSAGE("chat-message"),
-    SESSION_INFORMATION("session-information"),
-    TERMINATION_NOTIFICATION("termination-notification");
+    PARTICIPATION_NOTIFICATION("participation-natification"),
+    EXPIRATION_NOTIFICATION("expiration-notificaiton"),
+    LIVE_SESSION_INFORMATION("live-session-information"),
+    CHAT_MESSAGE("chat-message");
 
     public final String value;
 
