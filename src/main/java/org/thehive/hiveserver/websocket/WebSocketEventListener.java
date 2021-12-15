@@ -60,6 +60,7 @@ public class WebSocketEventListener {
         var liveId = extractLiveIdFromDestination(destination);
         log.info("Session subscription, liveId: {}, securityUser: {}", liveId, securityUser);
         var liveSession = liveSessionHolder.getSession(liveId);
+        liveSession.addParticipant(securityUser.getUsername());
         messagingService.sendLiveSessionInformation(liveSession, securityUser.getUsername());
         messagingService.sendParticipationNotification(liveSession, securityUser.getUsername(), true);
     }
@@ -69,6 +70,7 @@ public class WebSocketEventListener {
         var liveId = extractLiveIdFromDestination(destination);
         log.info("Session unsubscription, liveId: {}, securityUser: {}", liveId, securityUser);
         var liveSession = liveSessionHolder.removeSession(liveId);
+        liveSession.removeParticipant(securityUser.getUsername());
         messagingService.sendParticipationNotification(liveSession, securityUser.getUsername(), false);
     }
 

@@ -11,7 +11,7 @@ import org.thehive.hiveserver.session.live.LiveSessionHolderStrategy;
 
 @Component
 @RequiredArgsConstructor
-@Endpoint(id = "live-session")
+@Endpoint(id = "liveSession")
 public class LiveSessionHealthEndpoint {
 
     private final LiveSessionHolderStrategy strategy;

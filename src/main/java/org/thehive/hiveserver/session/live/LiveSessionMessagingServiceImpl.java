@@ -27,7 +27,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         payload.setDuration(liveSession.session.getDuration());
         payload.setParticipants(liveSession.getCurrentParticipantSet());
         payload.setCreatedAt(liveSession.session.getCreatedAt());
-        log.info("LiveSessionInformation sending, participant: {}, payload: {}", participant, payload);
+        log.info("LiveSessionInformation sending, liveId: {}, participant: {}, payload: {}", liveSession.liveId, participant, payload);
         messagingTemplate.convertAndSendToUser(participant, createSessionDesination(liveSession.liveId), payload, headers);
     }
 
@@ -39,7 +39,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         payload.setParticipant(participant);
         payload.setJoined(joined);
         payload.setTimestamp(System.currentTimeMillis());
-        log.info("ParticipationNotification sending, live-id: {}, payload: {}", liveSession, payload);
+        log.info("ParticipationNotification sending, live-id: {}, payload: {}", liveSession.liveId, payload);
         liveSession.getCurrentParticipantSet()
                 .parallelStream()
                 .filter(p -> !p.equals(participant))
@@ -52,7 +52,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         headers.setPayloadType(PayloadType.EXPIRATION_NOTIFICATION);
         var payload = new ExpirationNotification();
         payload.setTimestamp(System.currentTimeMillis());
-        log.info("ExpirationNotification sending, live-id: {}, payload: {}", liveSession, payload);
+        log.info("ExpirationNotification sending, live-id: {}, payload: {}", liveSession.liveId, payload);
         liveSession.getCurrentParticipantSet()
                 .parallelStream()
                 .forEach(p -> messagingTemplate.convertAndSendToUser(p, createSessionDesination(liveSession.liveId), payload, headers));
@@ -62,7 +62,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
     public void sendChatMessage(LiveSession liveSession, ChatMessage payload) {
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.CHAT_MESSAGE);
-        log.info(" ChatMessage sending, live-id: {}, payload: {}", liveSession, payload);
+        log.info(" ChatMessage sending, live-id: {}, payload: {}", liveSession.liveId, payload);
         liveSession.getCurrentParticipantSet()
                 .parallelStream()
                 .forEach(p -> messagingTemplate.convertAndSendToUser(p, createSessionDesination(liveSession.liveId), payload, headers));

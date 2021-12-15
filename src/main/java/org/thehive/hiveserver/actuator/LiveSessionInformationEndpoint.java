@@ -10,7 +10,7 @@ import org.thehive.hiveserver.session.live.LiveSessionHolder;
 
 @Component
 @RequiredArgsConstructor
-@Endpoint(id = "live-session-information")
+@Endpoint(id = "liveSessionInformation")
 public class LiveSessionInformationEndpoint {
 
     private final LiveSessionHolder liveSessionHolder;

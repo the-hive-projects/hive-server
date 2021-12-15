@@ -10,7 +10,7 @@ import java.util.Collection;
 
 @Component
 @RequiredArgsConstructor
-@Endpoint(id = "live-session-list")
+@Endpoint(id = "liveSessionList")
 public class LiveSessionListEndpoint {
 
     private final LiveSessionHolder liveSessionHolder;
