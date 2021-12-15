@@ -22,22 +22,36 @@ public class SessionApi {
     private final LiveSessionHolder liveSessionHolder;
     private final SessionProperties sessionProperties;
 
-    @GetMapping("/{live-id}")
+    @GetMapping("{id}")
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
-    public Session get(@PathVariable("live-id") String liveId) {
-        if (!liveSessionHolder.contains(liveId))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Live session not found by given joinId, joinId: " + liveId);
+    public Session get(@PathVariable("id") int id) {
+        return sessionService.findById(id);
+    }
+
+    @GetMapping("/live/{live-id}")
+    @Operation(security = @SecurityRequirement(name = "generalSecurity"))
+    public Session getLive(@PathVariable("live-id") String liveId) {
         var liveSession = liveSessionHolder.getSession(liveId);
+        if (liveSession == null)
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Live session not found by given joinId, joinId: " + liveId);
         return liveSession.session;
     }
 
     @PostMapping
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
     public Session save(@RequestBody Session session) {
+        validateSessionDuration(session);
         var savedSession = sessionService.save(session);
         var liveSession = liveSessionHolder.addSession(savedSession);
         log.info("LiveSession has been started, liveId: {}, session: {}", liveSession.liveId, liveSession.session);
         return savedSession;
+    }
+
+    private void validateSessionDuration(Session session) {
+        if (session.getDuration() == null || session.getDuration() < sessionProperties.getDuration().getMax().toMillis())
+            session.setDuration(sessionProperties.getDuration().getMin().toMillis());
+        else
+            session.setDuration(sessionProperties.getDuration().getMax().toMillis());
     }
 
 }

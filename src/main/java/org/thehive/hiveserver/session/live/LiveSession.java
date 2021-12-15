@@ -16,7 +16,7 @@ public class LiveSession {
     private final Set<String> allParticipantSet;
     private final Set<String> currentParticipantSet;
 
-    LiveSession(@NonNull String liveId, @NonNull Session session) {
+    public LiveSession(@NonNull String liveId, @NonNull Session session) {
         this.liveId = liveId;
         this.session = session;
         this.allParticipantSet = new ConcurrentSkipListSet<>();

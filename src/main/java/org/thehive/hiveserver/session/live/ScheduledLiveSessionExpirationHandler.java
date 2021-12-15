@@ -10,6 +10,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 public class ScheduledLiveSessionExpirationHandler implements LiveSessionExpirationHandler {
 
     private final LiveSessionHolder liveSessionHolder;
+    private final LiveSessionMessagingService liveSessionMessagingService;
 
     @Async
     @Scheduled(fixedDelayString = "${session.duration.expiration.checkTimeInterval}")
@@ -24,8 +25,9 @@ public class ScheduledLiveSessionExpirationHandler implements LiveSessionExpirat
 
     @Override
     public void expireSession(LiveSession liveSession) {
+        log.info("Live Session is being ending, joinId: {}, session: {}", liveSession.liveId, liveSession.session);
         liveSessionHolder.removeSession(liveSession.liveId);
-        log.info("Live Session has been ended, joinId: {}, session: {}", liveSession.liveId, liveSession.session);
+        liveSessionMessagingService.sendExpirationNotification(liveSession);
     }
 
 }
