@@ -34,7 +34,7 @@ public class HiveServerApplication {
     public CommandLineRunner startDevDefaultSession(SessionService sessionService, LiveSessionHolder liveSessionHolder) {
         return args -> {
             var session = sessionService.findById(1);
-            liveSessionHolder.addSession(session);
+            var liveSession = liveSessionHolder.addSession(session);
         };
     }
 

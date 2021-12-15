@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.thehive.hiveserver.entity.Session;
 import org.thehive.hiveserver.service.SessionService;
+import org.thehive.hiveserver.session.SessionProperties;
 import org.thehive.hiveserver.session.live.LiveSessionHolder;
 
 @RequiredArgsConstructor
@@ -19,13 +20,14 @@ public class SessionApi {
 
     private final SessionService sessionService;
     private final LiveSessionHolder liveSessionHolder;
+    private final SessionProperties sessionProperties;
 
-    @GetMapping("/{join-id}")
+    @GetMapping("/{live-id}")
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
-    public Session get(@PathVariable("join-id") String joinId) {
-        if (!liveSessionHolder.contains(joinId))
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Live session not found by given joinId, joinId: " + joinId);
-        var liveSession = liveSessionHolder.getSession(joinId);
+    public Session get(@PathVariable("live-id") String liveId) {
+        if (!liveSessionHolder.contains(liveId))
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Live session not found by given joinId, joinId: " + liveId);
+        var liveSession = liveSessionHolder.getSession(liveId);
         return liveSession.session;
     }
 
@@ -34,7 +36,7 @@ public class SessionApi {
     public Session save(@RequestBody Session session) {
         var savedSession = sessionService.save(session);
         var liveSession = liveSessionHolder.addSession(savedSession);
-        log.info("Live Session has been started, joinId: {}, session: {}", liveSession.liveId, liveSession.session);
+        log.info("LiveSession has been started, liveId: {}, session: {}", liveSession.liveId, liveSession.session);
         return savedSession;
     }
 

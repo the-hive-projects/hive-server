@@ -2,9 +2,9 @@ package org.thehive.hiveserver.websocket.header;
 
 public enum PayloadType {
 
+    LIVE_SESSION_INFORMATION("live-session-information"),
     PARTICIPATION_NOTIFICATION("participation-natification"),
     EXPIRATION_NOTIFICATION("expiration-notificaiton"),
-    LIVE_SESSION_INFORMATION("live-session-information"),
     CHAT_MESSAGE("chat-message");
 
     public final String value;

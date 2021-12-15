@@ -9,8 +9,6 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.thehive.hiveserver.session.live.LiveSessionHolder;
 import org.thehive.hiveserver.session.live.LiveSessionMessagingService;
-import org.thehive.hiveserver.websocket.header.AppHeaders;
-import org.thehive.hiveserver.websocket.header.PayloadType;
 import org.thehive.hiveserver.websocket.payload.ChatMessage;
 
 @Slf4j(topic = "session")
@@ -25,9 +23,7 @@ public class SessionWebSocketController {
     public void chat(@DestinationVariable("live-id") String liveId, @Payload ChatMessage chatMessage, Authentication authentication) {
         chatMessage.setFrom(authentication.getName());
         chatMessage.setTimestamp(System.currentTimeMillis());
-        var headers = new AppHeaders();
-        headers.setPayloadType(PayloadType.CHAT_MESSAGE);
-        log.info("ChatMessage payload: {}, headers: {}", chatMessage, headers);
+        log.info("ChatMessage received - payload: {}, liveId: {}, securiyUser: {}", chatMessage, liveId, authentication.getPrincipal());
         var liveSession = liveSessionHolder.getSession(liveId);
         messagingService.sendChatMessage(liveSession, chatMessage);
     }
