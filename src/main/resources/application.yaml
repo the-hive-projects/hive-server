@@ -12,3 +12,30 @@ spring:
     name: hive-server
   profiles:
     active: dev
+validation:
+  message:
+    source: classpath:messages
+    encoding: UTF-8
+    format:
+      delimiter: ','
+      separator: ':'
+      prefix: '['
+      suffix: ']'
+    uniqueness:
+      username: "Username '{}' is already taken"
+      email: "Email '{}' is already taken"
+session:
+  id:
+    length: 11
+    generator:
+      type: NUMERICAL
+  duration:
+    min: 20m
+    max: 90m
+    expiration:
+      checkTimeInterval: 1000
+image:
+  generator:
+    random:
+      size: 8
+      minSquare: 5
