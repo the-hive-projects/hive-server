@@ -11,6 +11,8 @@ import org.thehive.hiveserver.session.live.LiveSessionHolder;
 import org.thehive.hiveserver.session.live.LiveSessionMessagingService;
 import org.thehive.hiveserver.websocket.payload.ChatMessage;
 
+import java.security.Principal;
+
 @Slf4j(topic = "session")
 @Controller
 @RequiredArgsConstructor
@@ -20,10 +22,10 @@ public class SessionWebSocketController {
     private final LiveSessionMessagingService messagingService;
 
     @MessageMapping("/session/chat/{live-id}")
-    public void chat(@DestinationVariable("live-id") String liveId, @Payload ChatMessage chatMessage, Authentication authentication) {
-        chatMessage.setFrom(authentication.getName());
+    public void chat(@DestinationVariable("live-id") String liveId, @Payload ChatMessage chatMessage, Principal principal) {
+        chatMessage.setFrom(principal.getName());
         chatMessage.setTimestamp(System.currentTimeMillis());
-        log.info("ChatMessage received - payload: {}, liveId: {}, securiyUser: {}", chatMessage, liveId, authentication.getPrincipal());
+        log.info("ChatMessage received - payload: {}, liveId: {}, securiyUser: {}", chatMessage, liveId, principal.getName());
         var liveSession = liveSessionHolder.get(liveId);
         messagingService.sendChatMessage(liveSession, chatMessage);
     }
