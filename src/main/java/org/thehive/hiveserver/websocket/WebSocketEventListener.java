@@ -23,14 +23,14 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleConnection(SessionConnectEvent event) {
-        var securityUser = WebSocketUtils.extractSecurityUser(event);
-        log.info("Connection - securityUser: {}", securityUser);
+        var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
+        log.info("Connection - webSocketUser: {}", webSocketUser);
     }
 
     @EventListener
     public void handleDisconnect(SessionDisconnectEvent event) {
-        var securityUser = WebSocketUtils.extractSecurityUser(event);
-        log.info("Disconnection - securityUser: {}", securityUser);
+        var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
+        log.info("Disconnection - webSocketUser: {}", webSocketUser);
     }
 
     @EventListener
@@ -56,22 +56,22 @@ public class WebSocketEventListener {
     }
 
     private void handleSessionSubscription(SessionSubscribeEvent event, String destination) {
-        var securityUser = WebSocketUtils.extractSecurityUser(event);
+        var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
         var liveId = extractLiveIdFromDestination(destination);
-        log.info("Session subscription, liveId: {}, securityUser: {}", liveId, securityUser);
+        log.info("Session subscription, liveId: {}, securityUser: {}", liveId, webSocketUser);
         var liveSession = liveSessionHolder.getSession(liveId);
-        liveSession.addParticipant(securityUser.getUsername());
-        messagingService.sendLiveSessionInformation(liveSession, securityUser.getUsername());
-        messagingService.sendParticipationNotification(liveSession, securityUser.getUsername(), true);
+        liveSession.addParticipant(webSocketUser.getUsername());
+        messagingService.sendLiveSessionInformation(liveSession, webSocketUser.getUsername());
+        messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), true);
     }
 
     private void handleSessionUnsubscription(SessionUnsubscribeEvent event, String destination) {
-        var securityUser = WebSocketUtils.extractSecurityUser(event);
+        var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
         var liveId = extractLiveIdFromDestination(destination);
-        log.info("Session unsubscription, liveId: {}, securityUser: {}", liveId, securityUser);
+        log.info("Session unsubscription, liveId: {}, securityUser: {}", liveId, webSocketUser);
         var liveSession = liveSessionHolder.removeSession(liveId);
-        liveSession.removeParticipant(securityUser.getUsername());
-        messagingService.sendParticipationNotification(liveSession, securityUser.getUsername(), false);
+        liveSession.removeParticipant(webSocketUser.getUsername());
+        messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), false);
     }
 
 }

@@ -1,9 +1,7 @@
 package org.thehive.hiveserver.websocket;
 
 import lombok.NonNull;
-import org.springframework.security.core.Authentication;
 import org.springframework.web.socket.messaging.AbstractSubProtocolEvent;
-import org.thehive.hiveserver.security.SecurityUser;
 
 import java.util.List;
 import java.util.Map;
@@ -25,11 +23,11 @@ public class WebSocketUtils {
         }
     }
 
-    public static SecurityUser extractSecurityUser(@NonNull AbstractSubProtocolEvent event) throws IllegalStateException {
-        var auth = (Authentication) event.getUser();
-        if (auth == null || !auth.isAuthenticated())
+    public static WebSocketUser extractWebSocketUser(@NonNull AbstractSubProtocolEvent event) throws IllegalStateException {
+        var webSocketPrincipal = (WebSocketPrincipal) event.getUser();
+        if (webSocketPrincipal == null)
             throw new IllegalStateException("Unauthorized");
-        return (SecurityUser) auth.getPrincipal();
+        return webSocketPrincipal.getWebSocketUser();
     }
 
 }
