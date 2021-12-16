@@ -24,7 +24,7 @@ public class SessionWebSocketController {
         chatMessage.setFrom(authentication.getName());
         chatMessage.setTimestamp(System.currentTimeMillis());
         log.info("ChatMessage received - payload: {}, liveId: {}, securiyUser: {}", chatMessage, liveId, authentication.getPrincipal());
-        var liveSession = liveSessionHolder.getSession(liveId);
+        var liveSession = liveSessionHolder.get(liveId);
         messagingService.sendChatMessage(liveSession, chatMessage);
     }
 

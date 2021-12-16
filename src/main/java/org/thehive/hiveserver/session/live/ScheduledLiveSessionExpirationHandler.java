@@ -26,7 +26,7 @@ public class ScheduledLiveSessionExpirationHandler implements LiveSessionExpirat
     @Override
     public void expireSession(LiveSession liveSession) {
         log.info("Live Session is being ending, joinId: {}, session: {}", liveSession.liveId, liveSession.session);
-        liveSessionHolder.removeSession(liveSession.liveId);
+        liveSessionHolder.remove(liveSession.liveId);
         liveSessionMessagingService.sendExpirationNotification(liveSession);
     }
 

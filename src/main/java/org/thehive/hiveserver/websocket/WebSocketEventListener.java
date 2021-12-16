@@ -31,6 +31,7 @@ public class WebSocketEventListener {
     public void handleDisconnect(SessionDisconnectEvent event) {
         var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
         log.info("Disconnection - webSocketUser: {}", webSocketUser);
+        makeParticipantLeft(webSocketUser);
     }
 
     @EventListener
@@ -59,7 +60,9 @@ public class WebSocketEventListener {
         var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
         var liveId = extractLiveIdFromDestination(destination);
         log.info("Session subscription, liveId: {}, securityUser: {}", liveId, webSocketUser);
-        var liveSession = liveSessionHolder.getSession(liveId);
+        makeParticipantLeft(webSocketUser);
+        webSocketUser.setLiveId(liveId);
+        var liveSession = liveSessionHolder.get(liveId);
         liveSession.addParticipant(webSocketUser.getUsername());
         messagingService.sendLiveSessionInformation(liveSession, webSocketUser.getUsername());
         messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), true);
@@ -69,9 +72,19 @@ public class WebSocketEventListener {
         var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
         var liveId = extractLiveIdFromDestination(destination);
         log.info("Session unsubscription, liveId: {}, securityUser: {}", liveId, webSocketUser);
-        var liveSession = liveSessionHolder.removeSession(liveId);
+        var liveSession = liveSessionHolder.remove(liveId);
         liveSession.removeParticipant(webSocketUser.getUsername());
         messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), false);
+    }
+
+    private void makeParticipantLeft(WebSocketUser webSocketUser) {
+        if (webSocketUser.getLiveId() != null) {
+            var liveSession = liveSessionHolder.get(webSocketUser.getLiveId());
+            if (liveSession != null) {
+                liveSession.removeParticipant(webSocketUser.getUsername());
+                messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), false);
+            }
+        }
     }
 
 }

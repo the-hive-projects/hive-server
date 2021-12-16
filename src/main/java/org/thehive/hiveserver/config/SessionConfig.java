@@ -62,7 +62,7 @@ public class SessionConfig {
     public CommandLineRunner startDevDefaultSession(SessionService sessionService, LiveSessionHolder liveSessionHolder) {
         return args -> {
             var session = sessionService.findById(1);
-            var liveSession = liveSessionHolder.addSession(session);
+            var liveSession = liveSessionHolder.add(session);
             log.info("Live session has been creates at startup, liveId: {}", liveSession.liveId);
         };
     }

@@ -8,11 +8,11 @@ public interface LiveSessionHolder {
 
     LiveSessionHolderStrategy getSessionHolderStrategy();
 
-    LiveSession addSession(Session session);
+    LiveSession add(Session session);
 
-    LiveSession removeSession(String liveId);
+    LiveSession remove(String liveId);
 
-    LiveSession getSession(String liveId);
+    LiveSession get(String liveId);
 
     Collection<String> allIds();
 

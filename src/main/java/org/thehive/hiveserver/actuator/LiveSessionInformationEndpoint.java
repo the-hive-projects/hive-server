@@ -17,7 +17,7 @@ public class LiveSessionInformationEndpoint {
 
     @ReadOperation
     public LiveSession liveSession(@Selector String liveId) {
-        return liveSessionHolder.getSession(liveId);
+        return liveSessionHolder.get(liveId);
     }
 
 }

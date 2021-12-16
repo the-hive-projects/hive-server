@@ -1,5 +1,5 @@
 INSERT INTO `user_infos` (`id`, `firstname`, `lastname`, `created_at`)
-VALUES (1, 'firstname', 'lastname', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
+VALUES (1, 'Stephen', 'WATSON', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
        (2, 'Robert', 'BROWN', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
        (3, 'John', 'WILSON', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
        (4, 'Michael', 'THOMSON', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000),
@@ -102,10 +102,10 @@ VALUES (1, 'firstname', 'lastname', SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP(
 
 insert into `users` (`id`, `username`, `password`, `email`, `user_info_id`)
 values (1, 'user', '{noop}password', 'user@mail.com', 1),
-       (2, 'rburborough1', '{noop}Z6gkSv2bPM', 'mgingle1@hostgator.com', 2),
-       (3, 'dstollenbeck2', '{noop}TVBSJh', 'tmcinteer2@slashdot.org', 3),
-       (4, 'srumsby3', '{noop}27PDXTBHO', 'tperillio3@t-online.de', 4),
-       (5, 'rquinby4', '{noop}tym6yfopm2Ws', 'iludovici4@ftc.gov', 5),
+       (2, 'user1', '{noop}password', 'mgingle1@hostgator.com', 2),
+       (3, 'user2', '{noop}password', 'tmcinteer2@slashdot.org', 3),
+       (4, 'user3', '{noop}password', 'tperillio3@t-online.de', 4),
+       (5, 'user4', '{noop}password', 'iludovici4@ftc.gov', 5),
        (6, 'evarcoe5', '{noop}FHb1IyTjFLMW', 'flecornu5@prnewswire.com', 6),
        (7, 'ebawdon6', '{noop}bbatQj', 'wfirman6@geocities.jp', 7),
        (8, 'blemerle7', '{noop}xYTE1T9jhY', 'vvanstone7@shutterfly.com', 8),

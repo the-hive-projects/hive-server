@@ -17,7 +17,7 @@ public class DefaultLiveSessionHolder extends AbstractLiveSessionHolder {
     }
 
     @Override
-    public LiveSession addSession(Session session) {
+    public LiveSession add(Session session) {
         String joinId;
         do {
             joinId = joinIdGenerator.generate();
@@ -29,12 +29,12 @@ public class DefaultLiveSessionHolder extends AbstractLiveSessionHolder {
 
     @Nullable
     @Override
-    public LiveSession removeSession(String liveId) {
+    public LiveSession remove(String liveId) {
         return strategy.remove(liveId);
     }
 
     @Override
-    public LiveSession getSession(String liveId) {
+    public LiveSession get(String liveId) {
         return strategy.get(liveId);
     }
 

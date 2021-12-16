@@ -31,7 +31,7 @@ public class SessionApi {
     @GetMapping("/live/{live-id}")
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
     public Session getLive(@PathVariable("live-id") String liveId) {
-        var liveSession = liveSessionHolder.getSession(liveId);
+        var liveSession = liveSessionHolder.get(liveId);
         if (liveSession == null)
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Live session not found by given joinId, joinId: " + liveId);
         return liveSession.session;
@@ -42,7 +42,7 @@ public class SessionApi {
     public Session save(@RequestBody Session session) {
         validateSessionDuration(session);
         var savedSession = sessionService.save(session);
-        var liveSession = liveSessionHolder.addSession(savedSession);
+        var liveSession = liveSessionHolder.add(savedSession);
         log.info("LiveSession has been started, liveId: {}, session: {}", liveSession.liveId, liveSession.session);
         return savedSession;
     }

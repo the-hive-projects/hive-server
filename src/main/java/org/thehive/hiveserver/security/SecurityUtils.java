@@ -18,7 +18,7 @@ public class SecurityUtils {
     }
 
     public static SecurityUser extractSecurityUser(@NonNull Principal principal) throws IllegalStateException {
-        var authentication=(Authentication)principal;
+        var authentication = (Authentication) principal;
         if (!authentication.isAuthenticated())
             throw new IllegalStateException("Authentication is unauthorized");
         return (SecurityUser) authentication.getPrincipal();

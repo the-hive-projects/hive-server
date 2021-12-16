@@ -22,7 +22,7 @@ class WebSocketConnectionTest {
     @Test
     void connect() throws InterruptedException {
         final var liveId = "33711917054";
-        final var authorizationHeaderValue = "Basic cmJ1cmJvcm91Z2gxOlo2Z2tTdjJiUE0=";
+        final var authorizationHeaderValue = "Basic dXNlcjpwYXNzd29yZA==";
         var wsClient = new StandardWebSocketClient();
         var wsStompClient = new WebSocketStompClient(wsClient);
         wsStompClient.setMessageConverter(new MappingJackson2MessageConverter());
