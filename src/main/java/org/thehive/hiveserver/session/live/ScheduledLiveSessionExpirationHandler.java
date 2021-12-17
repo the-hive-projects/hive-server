@@ -19,7 +19,7 @@ public class ScheduledLiveSessionExpirationHandler implements LiveSessionExpirat
         var currentTimeMs = System.currentTimeMillis();
         var liveSessions = liveSessionHolder.allSessions();
         liveSessions.parallelStream()
-                .filter(liveSession -> liveSession.session.getDuration() <= currentTimeMs - liveSession.session.getCreatedAt())
+                .filter(liveSession -> liveSession.session.getDuration() <= currentTimeMs - liveSession.session.getCreationTime())
                 .forEach(this::expireSession);
     }
 

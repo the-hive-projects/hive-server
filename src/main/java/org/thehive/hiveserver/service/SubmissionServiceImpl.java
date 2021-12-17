@@ -15,7 +15,7 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     @Override
     public Submission save(Submission submission) {
-        return submissionRepository.save(submission.withId(null));
+        return submissionRepository.save((Submission) submission.withId(null));
     }
 
     @Override

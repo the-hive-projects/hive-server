@@ -21,11 +21,7 @@ import static org.thehive.hiveserver.validation.ValidationConstraints.*;
 @NoArgsConstructor
 @Entity(name = "user")
 @Table(name = "users")
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class User extends BaseEntity {
 
     @Length(min = USER_USERNAME_LENGTH_MIN, max = USER_USERNAME_LENGTH_MAX, message = "{user.username.length}")
     @Pattern(regexp = USER_USERNAME_PATTERN_REGEXP, message = "{user.username.pattern}")

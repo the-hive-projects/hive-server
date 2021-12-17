@@ -33,6 +33,6 @@ public class UserInfo {
     private String lastname;
 
     @CreatedDate
-    private Long createdAt;
+    private Long creationTime;
 
 }

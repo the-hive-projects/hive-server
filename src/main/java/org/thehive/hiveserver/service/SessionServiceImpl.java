@@ -15,7 +15,7 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public Session save(@NonNull Session session) {
-        return sessionRepository.save(session.withId(null));
+        return sessionRepository.save((Session) session.withId(null));
     }
 
     @Override

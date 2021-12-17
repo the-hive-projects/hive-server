@@ -11,11 +11,7 @@ import javax.persistence.*;
 @NoArgsConstructor
 @Entity(name = "imgae")
 @Table(name = "images")
-public class Image {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Image extends BaseEntity {
 
     @Transient
     private byte[] content;

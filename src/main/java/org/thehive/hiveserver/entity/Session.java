@@ -16,11 +16,7 @@ import javax.persistence.*;
 @EntityListeners(AuditingEntityListener.class)
 @Entity(name = "session")
 @Table(name = "sessions")
-public class Session {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
+public class Session extends BaseEntity {
 
     private String name;
 
@@ -33,6 +29,6 @@ public class Session {
     private User user;
 
     @CreatedDate
-    private Long createdAt;
+    private Long creationTime;
 
 }

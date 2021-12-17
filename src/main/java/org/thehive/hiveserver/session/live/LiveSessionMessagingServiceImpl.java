@@ -26,7 +26,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         payload.setOwner(liveSession.session.getUser().getUsername());
         payload.setDuration(liveSession.session.getDuration());
         payload.setParticipants(liveSession.getCurrentParticipantSet());
-        payload.setCreatedAt(liveSession.session.getCreatedAt());
+        payload.setCreatedAt(liveSession.session.getCreationTime());
         log.info("LiveSessionInformation sending, liveId: {}, participant: {}, payload: {}", liveSession.liveId, participant, payload);
         messagingTemplate.convertAndSendToUser(participant, createSessionDesination(liveSession.liveId), payload, headers);
     }
