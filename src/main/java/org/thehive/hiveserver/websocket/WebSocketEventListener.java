@@ -10,6 +10,7 @@ import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 import org.thehive.hiveserver.session.live.LiveSessionHolder;
 import org.thehive.hiveserver.session.live.LiveSessionMessagingService;
+import org.thehive.hiveserver.websocket.authentication.WebSocketUser;
 
 @Component
 @RequiredArgsConstructor

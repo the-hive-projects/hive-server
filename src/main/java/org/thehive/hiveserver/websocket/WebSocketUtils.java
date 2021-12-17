@@ -2,6 +2,8 @@ package org.thehive.hiveserver.websocket;
 
 import lombok.NonNull;
 import org.springframework.web.socket.messaging.AbstractSubProtocolEvent;
+import org.thehive.hiveserver.websocket.authentication.WebSocketPrincipal;
+import org.thehive.hiveserver.websocket.authentication.WebSocketUser;
 
 import java.util.List;
 import java.util.Map;

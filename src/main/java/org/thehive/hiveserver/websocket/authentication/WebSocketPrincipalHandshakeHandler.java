@@ -1,4 +1,4 @@
-package org.thehive.hiveserver.websocket;
+package org.thehive.hiveserver.websocket.authentication;
 
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;
