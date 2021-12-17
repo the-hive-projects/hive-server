@@ -23,7 +23,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.LIVE_SESSION_INFORMATION);
         var payload = new LiveSessionInformation();
-        payload.setOwner(liveSession.session.getCreatedBy().getUsername());
+        payload.setOwner(liveSession.session.getUser().getUsername());
         payload.setDuration(liveSession.session.getDuration());
         payload.setParticipants(liveSession.getCurrentParticipantSet());
         payload.setCreatedAt(liveSession.session.getCreatedAt());

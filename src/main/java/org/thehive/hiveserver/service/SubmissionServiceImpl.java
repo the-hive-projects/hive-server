@@ -1,11 +1,13 @@
 package org.thehive.hiveserver.service;
 
-import io.swagger.v3.oas.annotations.servers.Server;
 import lombok.RequiredArgsConstructor;
+import org.springframework.stereotype.Service;
 import org.thehive.hiveserver.entity.Submission;
 import org.thehive.hiveserver.repository.SubmissionRepository;
 
-@Server
+import java.util.List;
+
+@Service
 @RequiredArgsConstructor
 public class SubmissionServiceImpl implements SubmissionService {
 
@@ -13,7 +15,17 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     @Override
     public Submission save(Submission submission) {
-        return submissionRepository.save(submission);
+        return submissionRepository.save(submission.withId(null));
+    }
+
+    @Override
+    public List<Submission> findAllBySessionId(int sessionId) {
+        return submissionRepository.findAllBySession_Id(sessionId);
+    }
+
+    @Override
+    public List<Submission> findAllByUserId(int userId) {
+        return submissionRepository.findAllByUser_Id(userId);
     }
 
 }

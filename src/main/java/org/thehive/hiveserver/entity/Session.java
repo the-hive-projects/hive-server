@@ -30,7 +30,7 @@ public class Session {
     @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
     @OneToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", nullable = false)
-    private User createdBy;
+    private User user;
 
     @CreatedDate
     private Long createdAt;
