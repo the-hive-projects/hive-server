@@ -3,7 +3,9 @@ package org.thehive.hiveserver.websocket.authentication;
 import lombok.NonNull;
 import org.springframework.lang.Nullable;
 
+import java.util.Collection;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryWebSocketAuthenticationHolderStrategy implements WebSocketAuthenticationHolderStrategy {
@@ -16,13 +18,23 @@ public class InMemoryWebSocketAuthenticationHolderStrategy implements WebSocketA
 
     @Override
     public void save(@NonNull WebSocketAuthentication authentication) {
-        map.put(authentication.getUsername(),authentication);
+        map.put(authentication.getUsername(), authentication);
     }
 
     @Nullable
     @Override
     public WebSocketAuthentication get(String username) {
         return map.get(username);
+    }
+
+    @Override
+    public Set<String> getAllUsernames() {
+        return map.keySet();
+    }
+
+    @Override
+    public Collection<WebSocketAuthentication> getAllUsers() {
+        return map.values();
     }
 
     @Override

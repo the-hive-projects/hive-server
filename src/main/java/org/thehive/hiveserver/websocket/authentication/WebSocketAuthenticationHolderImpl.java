@@ -1,15 +1,13 @@
 package org.thehive.hiveserver.websocket.authentication;
 
-import lombok.RequiredArgsConstructor;
+import lombok.NonNull;
 
-@RequiredArgsConstructor
-public class WebSocketAuthenticationHolderImpl implements WebSocketAuthenticationHolder {
+import java.util.Collection;
 
-    private final WebSocketAuthenticationHolderStrategy strategy;
+public class WebSocketAuthenticationHolderImpl extends AbstractWebSocketAuthenticationHolder {
 
-    @Override
-    public WebSocketAuthenticationHolderStrategy getStrategy() {
-        return strategy;
+    public WebSocketAuthenticationHolderImpl(@NonNull WebSocketAuthenticationHolderStrategy strategy) {
+        super(strategy);
     }
 
     @Override
@@ -20,6 +18,16 @@ public class WebSocketAuthenticationHolderImpl implements WebSocketAuthenticatio
     @Override
     public WebSocketAuthentication get(String username) {
         return strategy.get(username);
+    }
+
+    @Override
+    public Collection<String> allUsernames() {
+        return strategy.getAllUsernames();
+    }
+
+    @Override
+    public Collection<WebSocketAuthentication> allUsers() {
+        return strategy.getAllUsers();
     }
 
     @Override

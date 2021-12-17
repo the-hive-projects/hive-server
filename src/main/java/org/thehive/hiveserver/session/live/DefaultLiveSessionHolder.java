@@ -40,12 +40,12 @@ public class DefaultLiveSessionHolder extends AbstractLiveSessionHolder {
 
     @Override
     public Collection<String> allIds() {
-        return strategy.ids();
+        return strategy.getAllIds();
     }
 
     @Override
     public Collection<LiveSession> allSessions() {
-        return strategy.sessions();
+        return strategy.getAllSessions();
     }
 
     @Override

@@ -6,6 +6,7 @@ import org.springframework.lang.Nullable;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class InMemoryLiveSessionHolderStrategy implements LiveSessionHolderStrategy {
@@ -28,12 +29,12 @@ public class InMemoryLiveSessionHolderStrategy implements LiveSessionHolderStrat
     }
 
     @Override
-    public Collection<String> ids() {
+    public Set<String> getAllIds() {
         return idLiveSessionMap.keySet();
     }
 
     @Override
-    public Collection<LiveSession> sessions() {
+    public Collection<LiveSession> getAllSessions() {
         return Collections.unmodifiableCollection(idLiveSessionMap.values());
     }
 

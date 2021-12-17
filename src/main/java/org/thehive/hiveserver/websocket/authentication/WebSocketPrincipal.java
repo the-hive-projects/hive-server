@@ -8,8 +8,8 @@ public class WebSocketPrincipal implements Principal {
 
     private final WebSocketUser webSocketUser;
 
-    public WebSocketPrincipal(int id, @NonNull String username) {
-        this.webSocketUser = new WebSocketUser(id, username);
+    public WebSocketPrincipal(@NonNull WebSocketUser webSocketUser) {
+        this.webSocketUser = webSocketUser;
     }
 
     @Override

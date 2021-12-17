@@ -10,7 +10,8 @@ import org.springframework.web.socket.messaging.SessionSubscribeEvent;
 import org.springframework.web.socket.messaging.SessionUnsubscribeEvent;
 import org.thehive.hiveserver.session.live.LiveSessionHolder;
 import org.thehive.hiveserver.session.live.LiveSessionMessagingService;
-import org.thehive.hiveserver.websocket.authentication.WebSocketUser;
+import org.thehive.hiveserver.websocket.authentication.DefaultWebSocketAuthentication;
+import org.thehive.hiveserver.websocket.authentication.WebSocketAuthenticationHolder;
 
 @Component
 @RequiredArgsConstructor
@@ -20,19 +21,29 @@ public class WebSocketEventListener {
     private static final String WEBSOCKET_SESSION_QUEUE_DESTINATION_PREFIX = "/user/queue/session";
 
     private final LiveSessionHolder liveSessionHolder;
+    private final WebSocketAuthenticationHolder webSocketAuthenticationHolder;
     private final LiveSessionMessagingService messagingService;
 
     @EventListener
     public void handleConnection(SessionConnectEvent event) {
         var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
+        var authentication = new DefaultWebSocketAuthentication(webSocketUser);
+        webSocketAuthenticationHolder.save(authentication);
         log.info("Connection - webSocketUser: {}", webSocketUser);
     }
 
     @EventListener
     public void handleDisconnect(SessionDisconnectEvent event) {
         var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
+        webSocketAuthenticationHolder.remove(webSocketUser.getUsername());
         log.info("Disconnection - webSocketUser: {}", webSocketUser);
-        makeParticipantLeft(webSocketUser);
+        if (webSocketUser.getLiveId() != null) {
+            var liveSession = liveSessionHolder.get(webSocketUser.getLiveId());
+            if (liveSession != null) {
+                liveSession.removeParticipant(webSocketUser.getUsername());
+                messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), false);
+            }
+        }
     }
 
     @EventListener
@@ -61,7 +72,13 @@ public class WebSocketEventListener {
         var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
         var liveId = extractLiveIdFromDestination(destination);
         log.info("Session subscription, liveId: {}, securityUser: {}", liveId, webSocketUser);
-        makeParticipantLeft(webSocketUser);
+        if (webSocketUser.getLiveId() != null) {
+            var liveSession = liveSessionHolder.get(webSocketUser.getLiveId());
+            if (liveSession != null) {
+                liveSession.removeParticipant(webSocketUser.getUsername());
+                messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), false);
+            }
+        }
         webSocketUser.setLiveId(liveId);
         var liveSession = liveSessionHolder.get(liveId);
         liveSession.addParticipant(webSocketUser.getUsername());
@@ -76,16 +93,6 @@ public class WebSocketEventListener {
         var liveSession = liveSessionHolder.remove(liveId);
         liveSession.removeParticipant(webSocketUser.getUsername());
         messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), false);
-    }
-
-    private void makeParticipantLeft(WebSocketUser webSocketUser) {
-        if (webSocketUser.getLiveId() != null) {
-            var liveSession = liveSessionHolder.get(webSocketUser.getLiveId());
-            if (liveSession != null) {
-                liveSession.removeParticipant(webSocketUser.getUsername());
-                messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), false);
-            }
-        }
     }
 
 }
