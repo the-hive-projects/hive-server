@@ -12,6 +12,7 @@ import org.thehive.hiveserver.session.live.LiveSessionHolder;
 import org.thehive.hiveserver.session.live.LiveSessionMessagingService;
 import org.thehive.hiveserver.websocket.authentication.DefaultWebSocketAuthentication;
 import org.thehive.hiveserver.websocket.authentication.WebSocketAuthenticationHolder;
+import org.thehive.hiveserver.websocket.authentication.WebSocketUser;
 
 @Component
 @RequiredArgsConstructor
@@ -35,15 +36,9 @@ public class WebSocketEventListener {
     @EventListener
     public void handleDisconnect(SessionDisconnectEvent event) {
         var user = WebSocketUtils.extractWebSocketUser(event);
+        handleSessionUnsubscriptionIfParticipant(user);
         webSocketAuthenticationHolder.remove(user.getUsername());
         log.info("Disconnection - webSocketUser: {}", user);
-        if (user.getLiveId() != null) {
-            var liveSession = liveSessionHolder.get(user.getLiveId());
-            if (liveSession != null) {
-                liveSession.removeParticipant(user.getUsername());
-                messagingService.sendParticipationNotification(liveSession, user.getUsername(), false);
-            }
-        }
     }
 
     @EventListener
@@ -55,10 +50,7 @@ public class WebSocketEventListener {
 
     @EventListener
     public void handleUnsubscription(SessionUnsubscribeEvent event) {
-        var user = WebSocketUtils.extractWebSocketUser(event);
-        if (user.getLiveId() != null) {
-            handleSessionUnsubscription(event, user.getLiveId());
-        }
+        handleSessionUnsubscription(event);
     }
 
     private String extractLiveIdFromDestination(String destination) {
@@ -70,30 +62,30 @@ public class WebSocketEventListener {
     }
 
     private void handleSessionSubscription(SessionSubscribeEvent event, String destination) {
-        var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
+        var user = WebSocketUtils.extractWebSocketUser(event);
         var liveId = extractLiveIdFromDestination(destination);
-        log.info("Session subscription, liveId: {}, securityUser: {}", liveId, webSocketUser);
-        if (webSocketUser.getLiveId() != null) {
-            var liveSession = liveSessionHolder.get(webSocketUser.getLiveId());
-            if (liveSession != null) {
-                liveSession.removeParticipant(webSocketUser.getUsername());
-                messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), false);
-            }
-        }
-        webSocketUser.setLiveId(liveId);
+        log.info("Session subscription, liveId: {}, webSocketUser: {}", liveId, user);
+        handleSessionUnsubscriptionIfParticipant(user);
+        user.setLiveId(liveId);
         var liveSession = liveSessionHolder.get(liveId);
-        liveSession.addParticipant(webSocketUser.getUsername());
-        messagingService.sendLiveSessionInformation(liveSession, webSocketUser.getUsername());
-        messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), true);
+        liveSession.addParticipant(user.getUsername());
+        messagingService.sendLiveSessionInformation(liveSession, user.getUsername());
+        messagingService.sendParticipationNotification(liveSession, user.getUsername(), true);
     }
 
-    private void handleSessionUnsubscription(SessionUnsubscribeEvent event, String liveId) {
-        var webSocketUser = WebSocketUtils.extractWebSocketUser(event);
-        webSocketUser.setLiveId(null);
-        log.info("Session unsubscription, liveId: {}, securityUser: {}", liveId, webSocketUser);
-        var liveSession = liveSessionHolder.remove(liveId);
-        liveSession.removeParticipant(webSocketUser.getUsername());
-        messagingService.sendParticipationNotification(liveSession, webSocketUser.getUsername(), false);
+    private void handleSessionUnsubscription(SessionUnsubscribeEvent event) {
+        handleSessionUnsubscriptionIfParticipant(WebSocketUtils.extractWebSocketUser(event));
+    }
+
+    private void handleSessionUnsubscriptionIfParticipant(WebSocketUser user) {
+        var liveId = user.getLiveId();
+        if (liveId != null) {
+            user.setLiveId(null);
+            log.info("Session unsubscription, liveId: {}, securityUser: {}", liveId, user);
+            var liveSession = liveSessionHolder.get(liveId);
+            liveSession.removeParticipant(user.getUsername());
+            messagingService.sendParticipationNotification(liveSession, user.getUsername(), false);
+        }
     }
 
 }

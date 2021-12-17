@@ -17,7 +17,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User save(@NonNull User user) {
-        var userToDb = (User)user.withId(null);
+        var userToDb = (User) user.withId(null);
         userToDb.setPassword(passwordEncoder.encode(user.getPassword()));
         userToDb.getUserInfo().setId(null);
         userToDb.getUserInfo().setCreationTime(System.currentTimeMillis());
