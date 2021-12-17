@@ -43,6 +43,7 @@ public class SessionApi {
         validateSessionDuration(session);
         var savedSession = sessionService.save(session);
         var liveSession = liveSessionHolder.add(savedSession);
+        savedSession.setLiveId(liveSession.liveId);
         log.info("LiveSession has been started, liveId: {}, session: {}", liveSession.liveId, liveSession.session);
         return savedSession;
     }

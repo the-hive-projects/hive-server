@@ -10,8 +10,7 @@ import java.security.Principal;
 import java.util.Map;
 
 @RequiredArgsConstructor
-public class WebSocketPrincipalHandshakeHandler extends DefaultHandshakeHandler {
-
+public class AppHandshakeHandler extends DefaultHandshakeHandler {
 
     @Override
     protected Principal determineUser(ServerHttpRequest request, WebSocketHandler wsHandler, Map<String, Object> attributes) {

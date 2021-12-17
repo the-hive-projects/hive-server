@@ -20,6 +20,9 @@ public class Session extends BaseEntity {
 
     private String name;
 
+    @Transient
+    private String liveId;
+
     private Long duration;
 
     @CreatedBy
