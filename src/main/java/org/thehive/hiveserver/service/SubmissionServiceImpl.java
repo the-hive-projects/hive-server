@@ -15,7 +15,8 @@ public class SubmissionServiceImpl implements SubmissionService {
 
     @Override
     public Submission save(Submission submission) {
-        return submissionRepository.save((Submission) submission.withId(null));
+        submission.setId(null);
+        return submissionRepository.save(submission);
     }
 
     @Override
@@ -26,6 +27,11 @@ public class SubmissionServiceImpl implements SubmissionService {
     @Override
     public List<Submission> findAllByUserId(int userId) {
         return submissionRepository.findAllByUser_Id(userId);
+    }
+
+    @Override
+    public boolean containsByUserIdAndSessionId(int userId, int sessionId) {
+        return submissionRepository.existsByUser_IdAndSession_Id(userId, sessionId);
     }
 
 }

@@ -1,6 +1,9 @@
 package org.thehive.hiveserver.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -9,7 +12,6 @@ import javax.persistence.MappedSuperclass;
 
 @Getter
 @Setter
-@With
 @AllArgsConstructor
 @NoArgsConstructor
 @MappedSuperclass

@@ -12,4 +12,6 @@ public interface SubmissionService {
 
     List<Submission> findAllByUserId(int userId);
 
+    boolean containsByUserIdAndSessionId(int userId, int sessionId);
+
 }

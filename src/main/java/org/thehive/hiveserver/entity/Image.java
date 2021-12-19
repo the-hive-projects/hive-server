@@ -1,6 +1,9 @@
 package org.thehive.hiveserver.entity;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.Entity;
 import javax.persistence.Table;
@@ -8,7 +11,6 @@ import javax.persistence.Transient;
 
 @Getter
 @Setter
-@With
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "imgae")

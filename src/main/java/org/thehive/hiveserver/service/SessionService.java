@@ -9,6 +9,8 @@ public interface SessionService {
 
     Session findById(Integer id) throws EmptyResultDataAccessException;
 
+    boolean containsByIdAndUserId(int id, int userId);
+
     void deleteById(Integer id) throws EmptyResultDataAccessException;
 
 }

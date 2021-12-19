@@ -15,7 +15,8 @@ public class SessionServiceImpl implements SessionService {
 
     @Override
     public Session save(@NonNull Session session) {
-        return sessionRepository.save((Session) session.withId(null));
+        session.setId(null);
+        return sessionRepository.save(session);
     }
 
     @Override
@@ -23,6 +24,11 @@ public class SessionServiceImpl implements SessionService {
         return sessionRepository.findById(id)
                 .orElseThrow(() -> new EmptyResultDataAccessException
                         (String.format("No class %s entity with id %s exists!", Session.class.getName(), id), 1));
+    }
+
+    @Override
+    public boolean containsByIdAndUserId(int id, int userId) {
+        return sessionRepository.existsByIdAndUserId(id, userId);
     }
 
     @Override

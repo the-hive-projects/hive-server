@@ -11,4 +11,6 @@ public interface SubmissionRepository extends JpaRepository<Submission, Integer>
 
     List<Submission> findAllByUser_Id(int userId);
 
+    boolean existsByUser_IdAndSession_Id(int userId, int sessionId);
+
 }
