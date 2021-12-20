@@ -4,7 +4,9 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.thehive.hiveserver.entity.Submission;
@@ -44,6 +46,25 @@ public class SubmissionApi {
     public List<Submission> getAllSubmissionsByUserId(HttpServletRequest request) {
         var user = SecurityUtils.extractSecurityUser(request);
         return submissionService.findAllByUserId(user.getId());
+    }
+
+    @Nullable
+    @GetMapping("/this")
+    @ResponseStatus(HttpStatus.OK)
+    @Operation(security = @SecurityRequirement(name = "generalSecurity"))
+    public Submission getThisSubmission(HttpServletRequest request) {
+        var user = SecurityUtils.extractSecurityUser(request);
+        var authentication = authenticationHolder.get(user.getUsername());
+        if (authentication == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not a participant of any live session");
+        var liveSession = liveSessionHolder.get(authentication.getUser().getLiveId());
+        if (liveSession == null)
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "User is not a participant of any live session");
+        try {
+            return submissionService.findByUserIdAndSessionId(user.getId(), liveSession.session.getId());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 
     @PostMapping

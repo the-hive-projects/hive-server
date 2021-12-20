@@ -4,13 +4,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.thehive.hiveserver.entity.Submission;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface SubmissionRepository extends JpaRepository<Submission, Integer> {
 
-    List<Submission> findAllBySession_Id(int sessionId);
+    List<Submission> findAllBySessionId(int sessionId);
 
-    List<Submission> findAllByUser_Id(int userId);
+    List<Submission> findAllByUserId(int userId);
 
-    boolean existsByUser_IdAndSession_Id(int userId, int sessionId);
+    Optional<Submission> findByUserIdAndSessionId(int userId, int sessionId);
+
+    boolean existsByUserIdAndSessionId(int userId, int sessionId);
 
 }

@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.thehive.hiveserver.entity.Session;
 import org.thehive.hiveserver.repository.SessionRepository;
 
+import java.util.List;
+
 @RequiredArgsConstructor
 @Service
 public class SessionServiceImpl implements SessionService {
@@ -20,10 +22,8 @@ public class SessionServiceImpl implements SessionService {
     }
 
     @Override
-    public Session findById(@NonNull Integer id) throws EmptyResultDataAccessException {
-        return sessionRepository.findById(id)
-                .orElseThrow(() -> new EmptyResultDataAccessException
-                        (String.format("No class %s entity with id %s exists!", Session.class.getName(), id), 1));
+    public List<Session> findAllByUserId(@NonNull int userId) {
+        return sessionRepository.findAllByUserId(userId);
     }
 
     @Override

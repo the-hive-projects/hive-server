@@ -8,9 +8,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.thehive.hiveserver.entity.Session;
+import org.thehive.hiveserver.security.SecurityUtils;
 import org.thehive.hiveserver.service.SessionService;
 import org.thehive.hiveserver.session.SessionProperties;
 import org.thehive.hiveserver.session.live.LiveSessionHolder;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RequiredArgsConstructor
 @RestController
@@ -22,13 +26,16 @@ public class SessionApi {
     private final LiveSessionHolder liveSessionHolder;
     private final SessionProperties sessionProperties;
 
-    @GetMapping("{id}")
+    @GetMapping
+    @ResponseStatus(HttpStatus.OK)
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
-    public Session get(@PathVariable("id") int id) {
-        return sessionService.findById(id);
+    public List<Session> get(HttpServletRequest request) {
+        var user = SecurityUtils.extractSecurityUser(request);
+        return sessionService.findAllByUserId(user.getId());
     }
 
-    @GetMapping("/live/{live-id}")
+    @GetMapping("/{live-id}")
+    @ResponseStatus(HttpStatus.OK)
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
     public Session getLive(@PathVariable("live-id") String liveId) {
         var liveSession = liveSessionHolder.get(liveId);
@@ -38,6 +45,7 @@ public class SessionApi {
     }
 
     @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
     @Operation(security = @SecurityRequirement(name = "generalSecurity"))
     public Session save(@RequestBody Session session) {
         validateSessionDuration(session);
