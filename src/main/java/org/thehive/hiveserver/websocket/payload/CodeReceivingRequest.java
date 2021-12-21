@@ -7,10 +7,10 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CodeUpdateNotification {
+public class CodeReceivingRequest implements Payload{
 
-    private long timestamp;
-    private String broadcasterUsername;
-    private String update;
+    private String broadcaster;
+    private String receiver;
+    private boolean start;
 
 }

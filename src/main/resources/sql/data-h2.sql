@@ -201,6 +201,3 @@ values (1, 'user', '{noop}password', 'user@mail.com', 1),
        (98, 'mburrells2p', '{noop}mid3Wb', 'bcarmen2p@cmu.edu', 98),
        (99, 'vgoodfield2q', '{noop}qo5oyBhg5', 'ewyss2q@ihg.com', 99),
        (100, 'jmapam2r', '{noop}GczdlPd0d1el', 'shardbattle2r@nih.gov', 100);
-
-INSERT INTO `sessions` (`id`, `name`, `duration`, `user_id`, `creation_time`)
-VALUES (1, 'test-session', 3600000, 1, SELECT EXTRACT(EPOCH from CURRENT_TIMESTAMP()) * 1000)

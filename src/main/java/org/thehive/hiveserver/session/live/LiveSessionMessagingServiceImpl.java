@@ -5,10 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.thehive.hiveserver.websocket.header.AppHeaders;
 import org.thehive.hiveserver.websocket.header.PayloadType;
-import org.thehive.hiveserver.websocket.payload.ChatMessage;
-import org.thehive.hiveserver.websocket.payload.ExpirationNotification;
-import org.thehive.hiveserver.websocket.payload.LiveSessionInformation;
-import org.thehive.hiveserver.websocket.payload.ParticipationNotification;
+import org.thehive.hiveserver.websocket.payload.*;
 
 @Slf4j(topic = "session")
 @RequiredArgsConstructor
@@ -66,6 +63,23 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         liveSession.getCurrentParticipantSet()
                 .parallelStream()
                 .forEach(p -> messagingTemplate.convertAndSendToUser(p, createSessionDesination(liveSession.liveId), payload, headers));
+    }
+
+    @Override
+    public void sendCodeReceivingRequest(LiveSession liveSession, CodeReceivingRequest payload) {
+        if (payload.isStart())
+            liveSession.addReceiver(payload.getBroadcaster(), payload.getReceiver());
+        else
+            liveSession.removeReceiver(payload.getBroadcaster(), payload.getReceiver());
+        var headers = new AppHeaders();
+        headers.setPayloadType(PayloadType.CODE_RECEIVING_REQUEST);
+        log.info(" CodeReceivingRequest sending, live-id: {}, payload: {}", liveSession.liveId, payload);
+        messagingTemplate.convertAndSendToUser(payload.getBroadcaster(), createSessionDesination(liveSession.liveId), payload, headers);
+    }
+
+    @Override
+    public void sendCodeBroadcastInformation(LiveSession liveSession, CodeBroadcastingInformation payload) {
+        log.info(" CodeBroadcastingInformation sending, live-id: {}, payload: {}", liveSession.liveId, payload);
     }
 
     private String createSessionDesination(String liveId) {

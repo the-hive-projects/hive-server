@@ -1,6 +1,8 @@
 package org.thehive.hiveserver.session.live;
 
 import org.thehive.hiveserver.websocket.payload.ChatMessage;
+import org.thehive.hiveserver.websocket.payload.CodeBroadcastingInformation;
+import org.thehive.hiveserver.websocket.payload.CodeReceivingRequest;
 
 public interface LiveSessionMessagingService {
 
@@ -11,5 +13,9 @@ public interface LiveSessionMessagingService {
     void sendExpirationNotification(LiveSession liveSession);
 
     void sendChatMessage(LiveSession liveSession, ChatMessage payload);
+
+    void sendCodeReceivingRequest(LiveSession liveSession, CodeReceivingRequest payload);
+
+    void sendCodeBroadcastInformation(LiveSession liveSession, CodeBroadcastingInformation payload);
 
 }
