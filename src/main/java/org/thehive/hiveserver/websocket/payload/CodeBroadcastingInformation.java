@@ -7,8 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CodeBroadcastingInformation implements Payload{
+public class CodeBroadcastingInformation implements Payload {
 
+    private String broadcaster;
     private String text;
 
 }

@@ -80,6 +80,11 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
     @Override
     public void sendCodeBroadcastInformation(LiveSession liveSession, CodeBroadcastingInformation payload) {
         log.info(" CodeBroadcastingInformation sending, live-id: {}, payload: {}", liveSession.liveId, payload);
+        var headers = new AppHeaders();
+        headers.setPayloadType(PayloadType.CODE_BROADCASTING_INFORMATION);
+        liveSession.getAllReceiversSet(payload.getBroadcaster())
+                .parallelStream()
+                .forEach(r -> messagingTemplate.convertAndSendToUser(r, createSessionDesination(liveSession.liveId), payload, headers));
     }
 
     private String createSessionDesination(String liveId) {

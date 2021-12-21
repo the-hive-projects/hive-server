@@ -7,7 +7,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class CodeReceivingRequest implements Payload{
+public class CodeReceivingRequest implements Payload {
 
     private String broadcaster;
     private String receiver;

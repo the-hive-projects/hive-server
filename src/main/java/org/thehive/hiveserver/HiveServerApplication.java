@@ -19,6 +19,7 @@ public class HiveServerApplication {
     // TODO: 12/14/2021 adds cache
     // TODO: 12/14/2021 adds session management
     // TODO: 12/14/2021 manage hiberante eager fetch type
+    // TODO: 12/21/2021 reference websocket principle in websocket authentication
 
     public static void main(String[] args) {
         SpringApplication.run(HiveServerApplication.class, args);
