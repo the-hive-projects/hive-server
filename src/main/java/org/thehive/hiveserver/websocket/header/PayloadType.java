@@ -7,6 +7,7 @@ public enum PayloadType {
     EXPIRATION_NOTIFICATION("expiration-notification"),
     CHAT_MESSAGE("chat-message"),
     CODE_RECEIVING_REQUEST("code-receiving-request"),
+    CODE_BROADCASTING_NOTIFICATION("code-broadcasting-notification"),
     CODE_BROADCASTING_INFORMATION("code-broadcasting-information");
 
     public final String value;

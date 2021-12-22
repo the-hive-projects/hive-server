@@ -25,12 +25,7 @@ public class LiveSession {
     }
 
     public void addReceiver(String broadcaster, String receiver) {
-        var receiverSet = broadcasterReceiverMap.get(broadcaster);
-        if (receiverSet == null) {
-            receiverSet = new HashSet<>();
-            broadcasterReceiverMap.put(broadcaster, receiverSet);
-        }
-        receiverSet.add(receiver);
+        broadcasterReceiverMap.computeIfAbsent(broadcaster, k -> new HashSet<>()).add(receiver);
     }
 
     public void removeReceiver(String broadcaster, String receiver) {
@@ -39,7 +34,7 @@ public class LiveSession {
             receiverSet.remove(receiver);
     }
 
-    public Set<String> getAllReceiversSet(String broadcaster) {
+    public Set<String> getAllReceivers(String broadcaster) {
         var receiverSet = broadcasterReceiverMap.get(broadcaster);
         if (receiverSet == null)
             return Collections.emptySet();
@@ -55,11 +50,11 @@ public class LiveSession {
         currentParticipantSet.remove(username);
     }
 
-    public Set<String> getAllParticipantSet() {
+    public Set<String> getAllParticipants() {
         return Collections.unmodifiableSet(allParticipantSet);
     }
 
-    public Set<String> getCurrentParticipantSet() {
+    public Set<String> getCurrentParticipants() {
         return Collections.unmodifiableSet(currentParticipantSet);
     }
 

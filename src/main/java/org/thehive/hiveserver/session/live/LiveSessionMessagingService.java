@@ -14,7 +14,7 @@ public interface LiveSessionMessagingService {
 
     void sendChatMessage(LiveSession liveSession, ChatMessage payload);
 
-    void sendCodeReceivingRequest(LiveSession liveSession, CodeReceivingRequest payload);
+    void sendCodeBroadcastingNotification(LiveSession liveSession, CodeReceivingRequest request);
 
     void sendCodeBroadcastInformation(LiveSession liveSession, CodeBroadcastingInformation payload);
 

@@ -39,7 +39,7 @@ public class SessionWebSocketController {
         var user = wsPrincipal.getWebSocketUser();
         var liveSession = liveSessionHolder.get(user.getLiveId());
         payload.setReceiver(principal.getName());
-        messagingService.sendCodeReceivingRequest(liveSession, payload);
+        messagingService.sendCodeBroadcastingNotification(liveSession, payload);
     }
 
     @MessageMapping("/session/code/broadcast")

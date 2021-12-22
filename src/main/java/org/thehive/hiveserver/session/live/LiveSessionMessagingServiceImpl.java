@@ -22,7 +22,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         var payload = new LiveSessionInformation();
         payload.setOwner(liveSession.session.getUser().getUsername());
         payload.setDuration(liveSession.session.getDuration());
-        payload.setParticipants(liveSession.getCurrentParticipantSet());
+        payload.setParticipants(liveSession.getCurrentParticipants());
         payload.setCreatedAt(liveSession.session.getCreationTime());
         log.info("LiveSessionInformation sending, liveId: {}, participant: {}, payload: {}", liveSession.liveId, participant, payload);
         messagingTemplate.convertAndSendToUser(participant, createSessionDesination(liveSession.liveId), payload, headers);
@@ -37,7 +37,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         payload.setJoined(joined);
         payload.setTimestamp(System.currentTimeMillis());
         log.info("ParticipationNotification sending, live-id: {}, payload: {}", liveSession.liveId, payload);
-        liveSession.getCurrentParticipantSet()
+        liveSession.getCurrentParticipants()
                 .parallelStream()
                 .filter(p -> !p.equals(participant))
                 .forEach(p -> messagingTemplate.convertAndSendToUser(p, createSessionDesination(liveSession.liveId), payload, headers));
@@ -50,7 +50,7 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         var payload = new ExpirationNotification();
         payload.setTimestamp(System.currentTimeMillis());
         log.info("ExpirationNotification sending, live-id: {}, payload: {}", liveSession.liveId, payload);
-        liveSession.getCurrentParticipantSet()
+        liveSession.getCurrentParticipants()
                 .parallelStream()
                 .forEach(p -> messagingTemplate.convertAndSendToUser(p, createSessionDesination(liveSession.liveId), payload, headers));
     }
@@ -60,21 +60,24 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.CHAT_MESSAGE);
         log.info(" ChatMessage sending, live-id: {}, payload: {}", liveSession.liveId, payload);
-        liveSession.getCurrentParticipantSet()
+        liveSession.getCurrentParticipants()
                 .parallelStream()
                 .forEach(p -> messagingTemplate.convertAndSendToUser(p, createSessionDesination(liveSession.liveId), payload, headers));
     }
 
     @Override
-    public void sendCodeReceivingRequest(LiveSession liveSession, CodeReceivingRequest payload) {
-        if (payload.isStart())
-            liveSession.addReceiver(payload.getBroadcaster(), payload.getReceiver());
+    public void sendCodeBroadcastingNotification(LiveSession liveSession, CodeReceivingRequest request) {
+        if (request.isStart())
+            liveSession.addReceiver(request.getBroadcaster(), request.getReceiver());
         else
-            liveSession.removeReceiver(payload.getBroadcaster(), payload.getReceiver());
+            liveSession.removeReceiver(request.getBroadcaster(), request.getReceiver());
+        var receivers = liveSession.getAllReceivers(request.getBroadcaster());
         var headers = new AppHeaders();
-        headers.setPayloadType(PayloadType.CODE_RECEIVING_REQUEST);
+        headers.setPayloadType(PayloadType.CODE_BROADCASTING_NOTIFICATION);
+        var payload = new CodeBroadcastingNotification();
+        payload.setReceivers(receivers);
         log.info(" CodeReceivingRequest sending, live-id: {}, payload: {}", liveSession.liveId, payload);
-        messagingTemplate.convertAndSendToUser(payload.getBroadcaster(), createSessionDesination(liveSession.liveId), payload, headers);
+        messagingTemplate.convertAndSendToUser(request.getBroadcaster(), createSessionDesination(liveSession.liveId), payload, headers);
     }
 
     @Override
@@ -82,9 +85,12 @@ public class LiveSessionMessagingServiceImpl implements LiveSessionMessagingServ
         log.info(" CodeBroadcastingInformation sending, live-id: {}, payload: {}", liveSession.liveId, payload);
         var headers = new AppHeaders();
         headers.setPayloadType(PayloadType.CODE_BROADCASTING_INFORMATION);
-        liveSession.getAllReceiversSet(payload.getBroadcaster())
+        liveSession.getAllReceivers(payload.getBroadcaster())
                 .parallelStream()
-                .forEach(r -> messagingTemplate.convertAndSendToUser(r, createSessionDesination(liveSession.liveId), payload, headers));
+                .forEach(r -> {
+                    System.out.println(r);
+                    messagingTemplate.convertAndSendToUser(r, createSessionDesination(liveSession.liveId), payload, headers);
+                });
     }
 
     private String createSessionDesination(String liveId) {
